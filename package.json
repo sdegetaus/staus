@@ -1,0 +1,22 @@
+{
+  "name": "taus.mx",
+  "version": "3.1.0",
+  "description": "My static site generator",
+  "author": {
+    "name": "Santiago Degetau",
+    "url": "https://taus.mx"
+  },
+  "scripts": {
+    "start": "ts-node ./src/pages/index.ts",
+    "build": "ts-node ./scripts/build.ts",
+    "serve": "http-server ./build -o"
+  },
+  "devDependencies": {
+    "@types/html-minifier": "^4.0.0",
+    "@types/node": "^14.11.2",
+    "@types/node-sass": "^4.11.1",
+    "browser-sync": "^2.26.12",
+    "html-minifier": "^4.0.0",
+    "node-sass": "^4.14.1"
+  }
+}
