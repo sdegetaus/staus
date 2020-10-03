@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import { minify } from "html-minifier";
+import * as sass from "node-sass";
 import * as path from "path";
 import * as config from "../config.json";
-import * as sass from "node-sass";
 
 const t0 = Date.now();
 console.log("Starting build...");
@@ -12,7 +12,7 @@ const inputPath = path.resolve(`./`, `${config.inDir}`);
 const staticPath = path.resolve(`./static`);
 
 try {
-  // create or empty `outDir` folder
+  // create or clear `outDir` folder
   if (!fs.existsSync(outputPath)) {
     console.log(
       `Output directory not found! Creating it now...\n${outputPath}`
@@ -34,7 +34,7 @@ try {
       .then((page) => {
         fs.writeFileSync(
           path.join(outputPath, `/${filename}.html`),
-          minify(page.default.build(), {
+          minify(page.default.compile(), {
             collapseWhitespace: config.minify,
             removeComments: config.minify,
           })
@@ -45,10 +45,11 @@ try {
       });
   });
 
+  // copy every file from the `staticPath`
   if (fs.existsSync(staticPath)) {
-    fs.readdirSync(staticPath).forEach((file) => {
-      fs.copyFileSync(path.join(staticPath, file), path.join(outputPath, file));
-    });
+    fs.readdirSync(staticPath).forEach((file) =>
+      fs.copyFileSync(path.join(staticPath, file), path.join(outputPath, file))
+    );
   }
 } catch (error) {
   console.log(error);

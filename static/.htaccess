@@ -1,0 +1,5 @@
+# remove .html extension from url
+# https://alexcican.com/post/how-to-remove-php-html-htm-extensions-with-htaccess/
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.html [NC,L]

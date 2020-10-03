@@ -3,8 +3,13 @@ import Page from "../../library/page";
 class Index extends Page {
   constructor() {
     super(
-      { title: "The Title", description: "My description" },
-      `<a href="/about">About</a>`
+      { title: "Home" },
+      {
+        content: `
+        <h1>Home</h1>
+        <a href="/about">About</a>
+      `,
+      }
     );
   }
 }

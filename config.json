@@ -1,5 +1,5 @@
 {
   "outDir": "./build",
   "inDir": "./src",
-  "minify": true
+  "minify": false
 }
