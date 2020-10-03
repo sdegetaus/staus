@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { minify } from "html-minifier";
+import { minify as htmlMinifier } from "html-minifier";
 import * as sass from "node-sass";
 import * as path from "path";
 import * as config from "../config.json";
@@ -35,7 +35,7 @@ try {
       .then((page) => {
         fs.writeFileSync(
           path.join(outputPath, `/${filename}.html`),
-          minify(page.default.compile(), {
+          htmlMinifier(page.default.compile(), {
             collapseWhitespace: config.minify,
             removeComments: config.minify,
           })
@@ -76,9 +76,7 @@ function buildJs() {
       fs
         .readFileSync(path.join(inputPath, `/assets/scripts/index.ts`))
         .toString(),
-      {
-        compilerOptions: { min },
-      }
+      {}
     ).outputText
   );
 }
