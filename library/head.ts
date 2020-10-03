@@ -6,6 +6,9 @@ export default class Head extends Part<HeadProps> {
   }
 }
 
+
+
+
 export type HeadProps = {
   title?: string;
   description?: string;

@@ -7,7 +7,7 @@ import * as uglifyJs from "uglify-js";
 import * as config from "../config.json";
 
 const timeStart = Date.now();
-console.log("Starting build...");
+console.log("Starting build...\n");
 
 const outputPath = path.resolve(`./`, `${config.outDir}`);
 const inputPath = path.resolve(`./`, `${config.inDir}`);
