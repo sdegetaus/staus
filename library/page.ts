@@ -5,10 +5,12 @@ import Body, { BodyProps } from "./body";
 import Head, { HeadProps } from "./head";
 
 export default abstract class Page {
+  private props: PageProps;
   private head: HeadProps;
   private body: BodyProps;
 
-  constructor(head: HeadProps, body: BodyProps) {
+  constructor(props: PageProps, head: HeadProps, body: BodyProps) {
+    this.props = props;
     this.head = head;
     this.body = body;
   }
@@ -20,8 +22,13 @@ export default abstract class Page {
       })
     );
     return template({
+      language: this.props.language,
       head: new Head(this.head).compile(),
       body: new Body(this.body).compile(),
     });
   };
 }
+
+type PageProps = {
+  language?: string;
+};

@@ -29,13 +29,13 @@ export const removeDirContent = (dirPath: string) => {
 };
 
 // NOT SURE IF NEEDED!
-export const copyDirContent = (src: string, dest: string) => {
-  if (fs.existsSync(src)) {
-    fs.readdirSync(src).forEach((file) =>
-      fs.copyFileSync(path.join(src, file), path.join(dest, file))
-    );
-  }
-};
+// export const copyDirContent = (src: string, dest: string) => {
+//   if (fs.existsSync(src)) {
+//     fs.readdirSync(src).forEach((file) =>
+//       fs.copyFileSync(path.join(src, file), path.join(dest, file))
+//     );
+//   }
+// };
 
 /**
  * Create directory if it doesn't exist
@@ -50,6 +50,13 @@ export const ensureDirSync = (dirPath: string) => {
     }
   }
 };
+
+/**
+ * Get only the name of a file (i.e. `/path/to/my-file.txt` would return `my-file`)
+ * @param file
+ */
+export const getFilename = (file: string) =>
+  path.basename(file, path.extname(file));
 
 /**
  * Compile Sass and save to Css

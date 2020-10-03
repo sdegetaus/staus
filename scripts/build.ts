@@ -33,7 +33,7 @@ try {
 
   // pages
   fs.readdirSync(path.join(inputPath, `/pages`)).forEach((file) => {
-    const filename = path.basename(file, ".ts");
+    const filename = utils.getFilename(file);
     import(`../src/pages/${filename}`)
       .then((page) => {
         fs.writeFileSync(
@@ -51,9 +51,13 @@ try {
 
   // copy every file from the `staticPath`
   if (fs.existsSync(staticPath)) {
-    fs.readdirSync(staticPath).forEach((file) =>
-      fs.copyFileSync(path.join(staticPath, file), path.join(outputPath, file))
-    );
+    fs.readdirSync(staticPath).forEach((file) => {
+      const filename = utils.getFilename(file).toLowerCase();
+      if (filename === "favicon") {
+        // post-process favicon
+      }
+      fs.copyFileSync(path.join(staticPath, file), path.join(outputPath, file));
+    });
   }
 
   // copy every font from fonts directory
