@@ -2,10 +2,11 @@ import * as fs from "fs";
 import { minify as htmlMinifier } from "html-minifier";
 import * as sass from "node-sass";
 import * as path from "path";
-import * as config from "../config.json";
 import * as ts from "typescript";
+import * as uglifyJs from "uglify-js";
+import * as config from "../config.json";
 
-const t0 = Date.now();
+const timeStart = Date.now();
 console.log("Starting build...");
 
 const outputPath = path.resolve(`./`, `${config.outDir}`);
@@ -52,14 +53,16 @@ try {
       fs.copyFileSync(path.join(staticPath, file), path.join(outputPath, file))
     );
   }
+  console.log(`\nBuild Successful!`);
 } catch (error) {
+  console.log(`\nFailed to build. See the console for more info.`);
   console.log(error);
 } finally {
-  const t1 = Date.now();
-  console.log(`Build took: ${t1 - t0}ms`);
+  console.log(`Build took: ${Date.now() - timeStart}ms\n`);
 }
 
 function buildCss() {
+  console.log("Building CSS...");
   fs.writeFileSync(
     path.join(outputPath, `/style.css`),
     sass.renderSync({
@@ -70,13 +73,15 @@ function buildCss() {
 }
 
 function buildJs() {
+  console.log("Building JavaScript...");
+  const js = ts.transpileModule(
+    fs
+      .readFileSync(path.join(inputPath, `/assets/scripts/index.ts`))
+      .toString(),
+    {}
+  ).outputText;
   fs.writeFileSync(
     path.join(outputPath, `/main.js`),
-    ts.transpileModule(
-      fs
-        .readFileSync(path.join(inputPath, `/assets/scripts/index.ts`))
-        .toString(),
-      {}
-    ).outputText
+    config.minify ? uglifyJs.minify(js).code : js
   );
 }
