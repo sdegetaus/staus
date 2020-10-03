@@ -3,6 +3,7 @@ import { minify } from "html-minifier";
 import * as sass from "node-sass";
 import * as path from "path";
 import * as config from "../config.json";
+import * as ts from "typescript";
 
 const t0 = Date.now();
 console.log("Starting build...");
@@ -69,9 +70,15 @@ function buildCss() {
 }
 
 function buildJs() {
-  // need to transform it into es5 js
   fs.writeFileSync(
     path.join(outputPath, `/main.js`),
-    fs.readFileSync(path.join(inputPath, `/assets/scripts/index.js`))
+    ts.transpileModule(
+      fs
+        .readFileSync(path.join(inputPath, `/assets/scripts/index.ts`))
+        .toString(),
+      {
+        compilerOptions: { min },
+      }
+    ).outputText
   );
 }
