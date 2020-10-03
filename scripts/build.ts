@@ -1,10 +1,8 @@
 import * as fs from "fs";
 import { minify as htmlMinifier } from "html-minifier";
-import * as sass from "node-sass";
 import * as path from "path";
-import * as ts from "typescript";
-import * as uglifyJs from "uglify-js";
 import * as config from "../config.json";
+import * as utils from "./utils";
 
 const timeStart = Date.now();
 console.log("Starting build...\n");
@@ -17,18 +15,21 @@ const staticPath = path.resolve(`./static`);
 try {
   // create or clear `outDir` folder
   if (!fs.existsSync(outputPath)) {
-    console.log(
-      `Output directory not found! Creating it now...\n${outputPath}`
-    );
+    console.log(`Out directory not found! Creating it now: "${outputPath}"`);
     fs.mkdirSync(outputPath);
   } else {
-    fs.readdirSync(outputPath).forEach((file) =>
-      fs.unlinkSync(path.join(outputPath, file))
-    );
+    utils.removeDirContent(outputPath);
   }
 
-  buildCss();
-  buildJs();
+  utils.compileCssFile(
+    path.join(assetsPath, `/styles/index.scss`),
+    path.join(outputPath, `/style.css`)
+  );
+
+  utils.transpileTsFile(
+    path.join(assetsPath, `/scripts/index.ts`),
+    path.join(outputPath, `/main.js`)
+  );
 
   // pages
   fs.readdirSync(path.join(inputPath, `/pages`)).forEach((file) => {
@@ -59,9 +60,7 @@ try {
   const inputFontsDir = path.join(assetsPath, "/fonts");
   const outputFontsDir = path.join(outputPath, "/fonts");
   if (fs.existsSync(inputFontsDir)) {
-    if (!fs.existsSync(outputFontsDir)) {
-      fs.mkdirSync(outputFontsDir);
-    }
+    utils.ensureDirSync(outputFontsDir);
     fs.readdirSync(inputFontsDir).forEach((file) =>
       fs.copyFileSync(
         path.join(inputFontsDir, file),
@@ -72,31 +71,8 @@ try {
 
   console.log(`\nBuild Successful!`);
 } catch (error) {
-  console.log(`\nFailed to build. See the console for more info.\n`);
-  console.log(error);
+  console.error(`\nFailed to build. See the console for more info.\n`);
+  console.error(error);
 } finally {
   console.log(`Build took: ${Date.now() - timeStart}ms\n`);
-}
-
-function buildCss() {
-  console.log("Building CSS...");
-  fs.writeFileSync(
-    path.join(outputPath, `/style.css`),
-    sass.renderSync({
-      file: path.join(assetsPath, `/styles/index.scss`),
-      outputStyle: config.minify ? "compressed" : "expanded",
-    }).css
-  );
-}
-
-function buildJs() {
-  console.log("Building JavaScript...");
-  const js = ts.transpileModule(
-    fs.readFileSync(path.join(assetsPath, `/scripts/index.ts`)).toString(),
-    {}
-  ).outputText;
-  fs.writeFileSync(
-    path.join(outputPath, `/main.js`),
-    config.minify ? uglifyJs.minify(js).code : js
-  );
 }
