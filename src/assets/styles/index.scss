@@ -1,5 +1,8 @@
+@import "./_normalize.scss";
+@import "./_fonts.scss";
 @import "./_variables.scss";
 
 body {
+  font-family: "Oswald";
   background-color: $red;
 }

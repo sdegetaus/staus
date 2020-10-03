@@ -11,6 +11,7 @@ console.log("Starting build...\n");
 
 const outputPath = path.resolve(`./`, `${config.outDir}`);
 const inputPath = path.resolve(`./`, `${config.inDir}`);
+const assetsPath = path.join(inputPath, `/assets`);
 const staticPath = path.resolve(`./static`);
 
 try {
@@ -53,9 +54,25 @@ try {
       fs.copyFileSync(path.join(staticPath, file), path.join(outputPath, file))
     );
   }
+
+  // copy every font from fonts directory
+  const inputFontsDir = path.join(assetsPath, "/fonts");
+  const outputFontsDir = path.join(outputPath, "/fonts");
+  if (fs.existsSync(inputFontsDir)) {
+    if (!fs.existsSync(outputFontsDir)) {
+      fs.mkdirSync(outputFontsDir);
+    }
+    fs.readdirSync(inputFontsDir).forEach((file) =>
+      fs.copyFileSync(
+        path.join(inputFontsDir, file),
+        path.join(outputFontsDir, file)
+      )
+    );
+  }
+
   console.log(`\nBuild Successful!`);
 } catch (error) {
-  console.log(`\nFailed to build. See the console for more info.`);
+  console.log(`\nFailed to build. See the console for more info.\n`);
   console.log(error);
 } finally {
   console.log(`Build took: ${Date.now() - timeStart}ms\n`);
@@ -66,7 +83,7 @@ function buildCss() {
   fs.writeFileSync(
     path.join(outputPath, `/style.css`),
     sass.renderSync({
-      file: path.join(inputPath, `/assets/styles/index.scss`),
+      file: path.join(assetsPath, `/styles/index.scss`),
       outputStyle: config.minify ? "compressed" : "expanded",
     }).css
   );
@@ -75,9 +92,7 @@ function buildCss() {
 function buildJs() {
   console.log("Building JavaScript...");
   const js = ts.transpileModule(
-    fs
-      .readFileSync(path.join(inputPath, `/assets/scripts/index.ts`))
-      .toString(),
+    fs.readFileSync(path.join(assetsPath, `/scripts/index.ts`)).toString(),
     {}
   ).outputText;
   fs.writeFileSync(
