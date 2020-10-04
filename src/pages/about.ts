@@ -5,14 +5,10 @@ class About extends Page {
   constructor() {
     super(
       {
+        title: "About",
+        description: "Home description",
         language: "es",
-        head: {
-          title: "Home",
-          description: "Home description",
-        },
-        body: {
-          content: `<h1>About</h1><a href="/">Home</a>`,
-        },
+        content: `<h1>About</h1><a href="/">Home</a>`,
       },
       translations.es.messages
     );

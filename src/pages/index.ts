@@ -8,15 +8,11 @@ class Index extends Page {
     super(
       {
         language: "es",
-        head: {
-          title: "Home",
-          description: "Home description",
-        },
-        body: {
-          content: fs.readFileSync(path.join(__dirname, "/index.html"), {
-            encoding: "utf-8",
-          }),
-        },
+        title: "Home",
+        description: "Home description",
+        content: fs.readFileSync(path.join(__dirname, "/index.html"), {
+          encoding: "utf-8",
+        }),
       },
       translations.es.messages
     );

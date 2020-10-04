@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as Handlebars from "handlebars";
 import * as path from "path";
-import { ID } from "./consts";
+import { ID, PATH } from "./consts";
 
 export default abstract class Page {
   private props: PageProps;
@@ -19,13 +19,6 @@ export default abstract class Page {
         encoding: "utf-8",
       })
     );
-
-    // Handlebars.registerHelper("translate", (s1: string) => {
-    //   if (s1 == null) {
-    //     return "NADA"; // todo: fallback
-    //   }
-    //   return s1.toUpperCase();
-    // });
 
     Handlebars.registerPartial(
       ID.head,
@@ -55,7 +48,7 @@ export default abstract class Page {
       })
     );
 
-    Handlebars.registerPartial(ID.content, this.props.body.content);
+    Handlebars.registerPartial(ID.content, this.getContent());
 
     Handlebars.registerPartial(
       ID.footer,
@@ -65,6 +58,7 @@ export default abstract class Page {
     );
 
     const html = template({
+      ...this.props,
       language: this.props.language,
       translations: this.translations,
     });
@@ -78,25 +72,32 @@ export default abstract class Page {
 
     return html;
   };
+
+  // TODO: maybe move to utils and purify it
+  private getContent = (): string => {
+    try {
+      return fs.readFileSync(
+        path.join(PATH.PAGES_DIR, `/${this.props.content}`),
+        { encoding: "utf-8" }
+      );
+    } catch (e) {
+      return this.props.content;
+    }
+  };
 }
 
 type PageProps = {
   language?: string;
-  head: {
-    title?: string;
-    description?: string;
-  };
-  body: {
-    class?: string;
-    content?: string;
-  };
+  title?: string;
+  description?: string;
+  bodyClass?: string;
+  content: string;
 };
 
 // todo: change location
 type TranslationKey = {
   [key: string]: string;
 };
-
 export type Translation = {
   [locale: string]: {
     messages: TranslationKey;
