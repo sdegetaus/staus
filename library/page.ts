@@ -23,8 +23,7 @@ export default abstract class Page {
       })
     );
     const template = Handlebars.compile(
-      // use __dirname?
-      fs.readFileSync(path.resolve(`./library/templates/base.html`), {
+      fs.readFileSync(path.join(__dirname, `./templates/base.html`), {
         encoding: "utf-8",
       })
     );
