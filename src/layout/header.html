@@ -6,7 +6,15 @@
       <ul>
         <li>
           <a href="/{{locale}}/">{{messages.home}}</a>
+        </li>
+        <li>
           <a href="/{{locale}}/about">{{messages.about}}</a>
+        </li>
+        <li>
+          {{#link}}
+          HALLO
+          {{messages.home}}
+          {{/link}}
         </li>
       </ul>
     </nav>

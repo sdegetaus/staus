@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import * as Handlebars from "handlebars";
 import * as path from "path";
-import { ID, PATH } from "./consts";
-import * as config from "../config.json";
+import { ID, PATH } from "../consts";
+import * as config from "../../staus-config.json";
 import Layout from "./layout";
 
 export default abstract class Page {
@@ -10,21 +10,26 @@ export default abstract class Page {
 
   public compile = (locale: string, messages: LanguageKey) => {
     const template = Handlebars.compile(
-      fs.readFileSync(path.join(__dirname, `./templates/base.html`), {
+      fs.readFileSync(path.join(PATH.STAUS_DIR, `./templates/base.html`), {
         encoding: "utf-8",
       })
     );
 
+    Handlebars.registerHelper("link", (context, options) => {
+      console.log(context, options);
+      return new Handlebars.SafeString(`<a>${context.fn(this).trim()}</a>`);
+    });
+
     Handlebars.registerPartial(
       ID.head,
-      fs.readFileSync(path.join(__dirname, `./templates/head.html`), {
+      fs.readFileSync(path.join(PATH.STAUS_DIR, `./templates/head.html`), {
         encoding: "utf-8",
       })
     );
 
     Handlebars.registerPartial(
       ID.body,
-      fs.readFileSync(path.join(__dirname, `./templates/body.html`), {
+      fs.readFileSync(path.join(PATH.STAUS_DIR, `./templates/body.html`), {
         encoding: "utf-8",
       })
     );
@@ -53,6 +58,7 @@ export default abstract class Page {
   };
 
   // TODO: maybe move to utils and purify it
+  // if finds path, return file content, else return the content
   private getContent = (): string => {
     try {
       return fs.readFileSync(

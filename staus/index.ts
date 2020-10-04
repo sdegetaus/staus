@@ -1,10 +1,13 @@
 import * as fs from "fs";
 import { minify as htmlMinifier, Options } from "html-minifier";
 import * as path from "path";
-import * as config from "../config.json";
+import * as config from "../staus-config.json";
 import { PATH } from "./consts";
-import { LanguageDictionary } from "./page";
+import { LanguageDictionary } from "./classes/page";
 import * as utils from "./utils";
+
+export { default as Layout } from "./classes/layout";
+export { default as Page } from "./classes/page";
 
 export default abstract class Staus {
   public static build = (language: LanguageDictionary) => {

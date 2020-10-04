@@ -1,5 +1,5 @@
 import * as path from "path";
-import * as config from "../config.json";
+import * as config from "../staus-config.json";
 
 export const ID = {
   head: "head",
@@ -8,6 +8,7 @@ export const ID = {
 };
 
 export const PATH = {
+  STAUS_DIR: __dirname,
   OUTPUT_DIR: path.resolve(`./`, `${config.outDir}`),
   INPUT_DIR: path.resolve(`./`, `${config.inDir}`),
   STATIC_DIR: path.resolve(`./static`),

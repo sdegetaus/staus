@@ -3,7 +3,7 @@ import * as sass from "node-sass";
 import * as path from "path";
 import * as ts from "typescript";
 import * as uglifyJs from "uglify-js";
-import * as config from "../config.json";
+import * as config from "../staus-config.json";
 
 /**
  * Remove all files and sub-directories in a directory. Adapted from @guybedford's code:

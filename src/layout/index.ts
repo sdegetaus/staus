@@ -1,3 +1,3 @@
-import Layout from "../../library/layout";
+import { Layout } from "../../staus";
 
 export const MainLayout = new Layout(["main", "header", "footer"]);
