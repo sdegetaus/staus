@@ -1,24 +1,16 @@
 import * as fs from "fs";
 import * as Handlebars from "handlebars";
 import * as path from "path";
-import Body, { BodyProps } from "./body";
-import Head, { HeadProps } from "./head";
 
 export default abstract class Page {
   private props: PageProps;
-  private head: HeadProps;
-  private body: BodyProps;
   private translations: { [key: string]: string };
 
   constructor(
     props: PageProps,
-    head: HeadProps,
-    body: BodyProps,
-    translations: { [key: string]: string }
+    translations: { [key: string]: string } // todo: should be ts type!
   ) {
     this.props = props;
-    this.head = head;
-    this.body = body;
     this.translations = translations;
   }
 
@@ -37,6 +29,13 @@ export default abstract class Page {
       }
       return s1.toUpperCase();
     });
+
+    Handlebars.registerPartial(
+      "head",
+      fs.readFileSync(path.join(__dirname, `./templates/head.html`), {
+        encoding: "utf-8",
+      })
+    );
 
     Handlebars.registerPartial(
       "body",
@@ -59,7 +58,7 @@ export default abstract class Page {
       })
     );
 
-    Handlebars.registerPartial("content", this.body.content);
+    Handlebars.registerPartial("content", this.props.body.content);
 
     Handlebars.registerPartial(
       "footer",
@@ -68,16 +67,25 @@ export default abstract class Page {
       })
     );
 
-    // Handlebars.createFrame(this.translations); // test
-
-    return template({
+    const html = template({
       language: this.props.language,
-      head: new Head(this.head).compile(),
       translations: this.translations,
     });
+
+    // todo: unregister
+
+    return html;
   };
 }
 
 type PageProps = {
   language?: string;
+  head: {
+    title?: string;
+    description?: string;
+  };
+  body: {
+    class?: string;
+    content?: string;
+  };
 };

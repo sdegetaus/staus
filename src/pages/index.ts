@@ -1,12 +1,21 @@
 import Page from "../../library/page";
+import * as fs from "fs";
+import * as path from "path";
 
 class Index extends Page {
   constructor() {
     super(
-      { language: "es" },
-      { title: "Home" },
       {
-        content: `<h1>Home</h1><a href="/about">About</a> {{language}}`,
+        language: "es",
+        head: {
+          title: "Home",
+          description: "Home description",
+        },
+        body: {
+          content: fs.readFileSync(path.join(__dirname, "/index.html"), {
+            encoding: "utf-8",
+          }),
+        },
       },
       { test: "can be translated!" }
     );

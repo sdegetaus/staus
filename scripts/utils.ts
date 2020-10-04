@@ -52,13 +52,6 @@ export const ensureDirSync = (dirPath: string) => {
 };
 
 /**
- * Get only the name of a file (i.e. `/path/to/my-file.txt` would return `my-file`)
- * @param file
- */
-export const getFilename = (file: string) =>
-  path.basename(file, path.extname(file));
-
-/**
  * Compile Sass and save to Css
  * @param src
  * @param dest

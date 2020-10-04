@@ -33,29 +33,32 @@ try {
 
   // pages
   fs.readdirSync(path.join(inputPath, `/pages`)).forEach((file) => {
-    const filename = utils.getFilename(file);
-    import(`../src/pages/${filename}`)
-      .then((page) => {
-        fs.writeFileSync(
-          path.join(outputPath, `/${filename}.html`),
-          htmlMinifier(page.default.compile(), {
-            collapseWhitespace: true,
-            removeComments: config.minify,
-            minifyCSS: config.minify,
-            minifyJS: config.minify,
-            preserveLineBreaks: !config.minify,
-          })
-        );
-      })
-      .catch((e) => {
-        throw e;
-      });
+    const extension = path.extname(file);
+    const filename = path.basename(file, extension);
+    if (extension === ".ts") {
+      import(`../src/pages/${filename}`)
+        .then((page) => {
+          fs.writeFileSync(
+            path.join(outputPath, `/${filename}.html`),
+            htmlMinifier(page.default.compile(), {
+              collapseWhitespace: true,
+              removeComments: config.minify,
+              minifyCSS: config.minify,
+              minifyJS: config.minify,
+              preserveLineBreaks: !config.minify,
+            })
+          );
+        })
+        .catch((e) => {
+          throw e;
+        });
+    }
   });
 
   // copy every file from the `staticPath`
   if (fs.existsSync(staticPath)) {
     fs.readdirSync(staticPath).forEach((file) => {
-      const filename = utils.getFilename(file).toLowerCase();
+      const filename = path.basename(file, path.extname(file)).toLowerCase();
       if (filename === "favicon") {
         // post-process favicon
       }
