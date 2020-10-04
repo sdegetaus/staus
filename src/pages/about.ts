@@ -1,5 +1,5 @@
 import Page from "../../library/page";
-import { MainLayout } from "../index";
+import { MainLayout } from "../layout";
 
 class About extends Page {
   constructor() {
