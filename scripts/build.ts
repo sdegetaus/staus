@@ -39,8 +39,11 @@ try {
         fs.writeFileSync(
           path.join(outputPath, `/${filename}.html`),
           htmlMinifier(page.default.compile(), {
-            collapseWhitespace: config.minify,
+            collapseWhitespace: true,
             removeComments: config.minify,
+            minifyCSS: config.minify,
+            minifyJS: config.minify,
+            preserveLineBreaks: !config.minify,
           })
         );
       })
