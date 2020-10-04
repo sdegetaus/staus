@@ -4,7 +4,7 @@ import * as path from "path";
 import { LanguageDictionary } from "./types";
 import * as utils from "./utils";
 
-type StausConfig = {
+type Config = {
   outDir: string;
   inDir: string;
   minify: boolean;
@@ -12,10 +12,10 @@ type StausConfig = {
 };
 
 export default abstract class Staus {
-  public static CONFIG: StausConfig;
+  public static CONFIG: Config;
   public static PATH: { [key: string]: string };
 
-  public static build = (language: LanguageDictionary, config: StausConfig) => {
+  public static build = (language: LanguageDictionary, config: Config) => {
     const timeStart = Date.now();
     console.log("Starting build...\n");
 
