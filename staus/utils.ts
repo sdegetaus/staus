@@ -3,7 +3,6 @@ import * as sass from "node-sass";
 import * as path from "path";
 import * as ts from "typescript";
 import * as uglifyJs from "uglify-js";
-import * as config from "../staus-config.json";
 
 /**
  * Remove all files and sub-directories in a directory. Adapted from @guybedford's code:
@@ -47,13 +46,13 @@ export const ensureDirSync = (dirPath: string) => {
  * @param src
  * @param dest
  */
-export const compileCssFile = (src: string, dest: string) => {
+export const compileCssFile = (src: string, dest: string, minify?: boolean) => {
   const timeStart = Date.now();
   fs.writeFileSync(
     dest,
     sass.renderSync({
       file: src,
-      outputStyle: config.minify ? "compressed" : "expanded",
+      outputStyle: minify ? "compressed" : "expanded",
     }).css
   );
   console.log(`Compiling Css took: ${Date.now() - timeStart}ms`);
@@ -68,7 +67,7 @@ export const compileCssFile = (src: string, dest: string) => {
 export const transpileTsFile = (
   src: string,
   dest: string,
-  options: ts.TranspileOptions = {}
+  minify?: boolean
 ) => {
   const timeStart = Date.now();
   const srcFile = fs.readFileSync(src).toString().trim();
@@ -78,14 +77,12 @@ export const transpileTsFile = (
     return;
   }
 
-  const transpiledJs = ts.transpileModule(
-    fs.readFileSync(src).toString(),
-    options
-  ).outputText;
+  const transpiledJs = ts.transpileModule(fs.readFileSync(src).toString(), {})
+    .outputText;
 
   fs.writeFileSync(
     dest,
-    config.minify ? uglifyJs.minify(transpiledJs).code : transpiledJs
+    minify ? uglifyJs.minify(transpiledJs).code : transpiledJs
   );
   console.log(`Compiling JavaScript took: ${Date.now() - timeStart}ms`);
 };

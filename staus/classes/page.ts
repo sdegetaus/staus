@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import * as Handlebars from "handlebars";
 import * as path from "path";
-import { ID, PATH } from "../consts";
-import * as config from "../../staus-config.json";
+import Staus from "../";
+import { ID } from "../consts";
 import Layout from "./layout";
 
 export default abstract class Page {
@@ -10,9 +10,12 @@ export default abstract class Page {
 
   public compile = (locale: string, messages: LanguageKey) => {
     const template = Handlebars.compile(
-      fs.readFileSync(path.join(PATH.STAUS_DIR, `./templates/base.html`), {
-        encoding: "utf-8",
-      })
+      fs.readFileSync(
+        path.join(Staus.PATH.STAUS_DIR, `./templates/base.html`),
+        {
+          encoding: "utf-8",
+        }
+      )
     );
 
     Handlebars.registerHelper("link", (context, options) => {
@@ -22,16 +25,22 @@ export default abstract class Page {
 
     Handlebars.registerPartial(
       ID.head,
-      fs.readFileSync(path.join(PATH.STAUS_DIR, `./templates/head.html`), {
-        encoding: "utf-8",
-      })
+      fs.readFileSync(
+        path.join(Staus.PATH.STAUS_DIR, `./templates/head.html`),
+        {
+          encoding: "utf-8",
+        }
+      )
     );
 
     Handlebars.registerPartial(
       ID.body,
-      fs.readFileSync(path.join(PATH.STAUS_DIR, `./templates/body.html`), {
-        encoding: "utf-8",
-      })
+      fs.readFileSync(
+        path.join(Staus.PATH.STAUS_DIR, `./templates/body.html`),
+        {
+          encoding: "utf-8",
+        }
+      )
     );
 
     this.props.layout.registerPartials();
@@ -43,7 +52,7 @@ export default abstract class Page {
       ...this.props,
       messages,
       locale,
-      defaultLanguage: config.defaultLanguage,
+      defaultLanguage: Staus.CONFIG.defaultLanguage,
     });
 
     // unregister layout partials
@@ -62,7 +71,7 @@ export default abstract class Page {
   private getContent = (): string => {
     try {
       return fs.readFileSync(
-        path.join(PATH.PAGES_DIR, `/${this.props.content}`),
+        path.join(Staus.PATH.PAGES_DIR, `/${this.props.content}`),
         { encoding: "utf-8" }
       );
     } catch (e) {
