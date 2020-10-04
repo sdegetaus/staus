@@ -5,12 +5,11 @@ import { ID, PATH } from "./consts";
 
 export default abstract class Page {
   private props: PageProps;
-  private translations: TranslationKey;
+  private translations: LanguageKey;
 
-  constructor(props: PageProps, translations: TranslationKey) {
+  constructor(props: PageProps, translations: LanguageKey) {
     this.props = props;
     this.translations = translations;
-    console.log(this.translations);
   }
 
   public compile = () => {
@@ -95,11 +94,12 @@ type PageProps = {
 };
 
 // todo: change location
-type TranslationKey = {
+type LanguageKey = {
   [key: string]: string;
 };
-export type Translation = {
+
+export type Language = {
   [locale: string]: {
-    messages: TranslationKey;
+    messages: LanguageKey;
   };
 };

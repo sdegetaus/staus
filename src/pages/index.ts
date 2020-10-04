@@ -1,7 +1,7 @@
 import Page from "../../library/page";
 import * as fs from "fs";
 import * as path from "path";
-import { translations } from "../l10n";
+import { language } from "../l10n";
 
 class Index extends Page {
   constructor() {
@@ -14,7 +14,7 @@ class Index extends Page {
           encoding: "utf-8",
         }),
       },
-      translations.es.messages
+      language.es.messages
     );
   }
 }
