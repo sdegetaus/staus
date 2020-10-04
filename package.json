@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "ts-node ./src/pages/index.ts",
-    "build": "ts-node ./scripts/build.ts",
+    "build": "ts-node ./src/index.ts",
     "serve": "http-server ./build -o"
   },
   "devDependencies": {

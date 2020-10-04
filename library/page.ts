@@ -37,6 +37,7 @@ export default abstract class Page {
 
     Handlebars.registerPartial(ID.content, this.getContent());
 
+    // TODO: translate title and description!
     const html = template({
       ...this.props,
       messages,
@@ -44,11 +45,13 @@ export default abstract class Page {
       defaultLanguage: config.defaultLanguage,
     });
 
-    // unregister all partials
+    // unregister layout partials
+    this.props.layout.unregisterPartials();
+
+    // unregister "base" partials
     [ID.head, ID.body, ID.content].forEach((o) => {
       Handlebars.unregisterPartial(o);
     });
-    this.props.layout.unregisterPartials();
 
     return html;
   };
@@ -79,7 +82,7 @@ type LanguageKey = {
   [key: string]: string;
 };
 
-export type Language = {
+export type LanguageDictionary = {
   [locale: string]: {
     messages: LanguageKey;
   };
