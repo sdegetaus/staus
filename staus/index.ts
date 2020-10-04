@@ -6,8 +6,7 @@ import { PATH } from "./consts";
 import { LanguageDictionary } from "./classes/page";
 import * as utils from "./utils";
 
-export { default as Layout } from "./classes/layout";
-export { default as Page } from "./classes/page";
+export { Layout, Page } from "./classes";
 
 export default abstract class Staus {
   public static build = (language: LanguageDictionary) => {
