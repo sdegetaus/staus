@@ -1,10 +1,8 @@
 import * as fs from "fs";
 import { minify as htmlMinifier, Options } from "html-minifier";
 import * as path from "path";
-import { LanguageDictionary } from "./classes/page";
+import { LanguageDictionary, StausConfig } from "./types";
 import * as utils from "./utils";
-
-export { Layout, Page } from "./classes";
 
 export default abstract class Staus {
   public static CONFIG: StausConfig;
@@ -127,9 +125,5 @@ export default abstract class Staus {
   };
 }
 
-type StausConfig = {
-  outDir: string;
-  inDir: string;
-  minify: boolean;
-  defaultLanguage: string;
-};
+export { Layout, Page } from "./classes";
+export { LanguageDictionary, StausConfig } from "./types";

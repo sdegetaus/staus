@@ -1,4 +1,4 @@
-import { Page } from "../../staus";
+import { Page } from "staus";
 import { MainLayout } from "../layout";
 
 class About extends Page {

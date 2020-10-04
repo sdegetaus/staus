@@ -1,4 +1,4 @@
-import { LanguageDictionary } from "../../staus/classes/page"; // todo: change location
+import { LanguageDictionary } from "staus";
 import * as EnglishMessages from "./en_US.json";
 import * as SpanishMessages from "./es_MX.json";
 

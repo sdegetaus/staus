@@ -3,6 +3,7 @@ import * as Handlebars from "handlebars";
 import * as path from "path";
 import Staus from "../";
 import { ID } from "../consts";
+import { LanguageKey } from "../types";
 import Layout from "./layout";
 
 export default abstract class Page {
@@ -86,15 +87,4 @@ type PageProps = {
   bodyClass?: string;
   content: string;
   layout: Layout;
-};
-
-// todo: change location
-type LanguageKey = {
-  [key: string]: string;
-};
-
-export type LanguageDictionary = {
-  [locale: string]: {
-    messages: LanguageKey;
-  };
 };
