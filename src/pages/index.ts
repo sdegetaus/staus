@@ -6,9 +6,9 @@ class Index extends Page {
       { language: "es" },
       { title: "Home" },
       {
-        content: `<h1>Home</h1><a href="/about">About</a>
-      `,
-      }
+        content: `<h1>Home</h1><a href="/about">About</a> {{language}}`,
+      },
+      { test: "can be translated!" }
     );
   }
 }

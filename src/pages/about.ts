@@ -7,7 +7,8 @@ class About extends Page {
       { title: "About" },
       {
         content: `<h1>About</h1><a href="/">Home</a>`,
-      }
+      },
+      { test: "hello" }
     );
   }
 }
