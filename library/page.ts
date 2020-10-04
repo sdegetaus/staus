@@ -35,30 +35,6 @@ export default abstract class Page {
 
     this.props.layout.registerPartials();
 
-    /*
-    // TODO: remove these from here,
-    // and let them be applied from `src`
-    Handlebars.registerPartial(
-      ID.layout,
-      fs.readFileSync(path.resolve(`./src/layout/general.html`), {
-        encoding: "utf-8",
-      })
-    );
-
-    Handlebars.registerPartial(
-      ID.header,
-      fs.readFileSync(path.resolve(`./src/layout/header.html`), {
-        encoding: "utf-8",
-      })
-    );
-    
-     Handlebars.registerPartial(
-      ID.footer,
-      fs.readFileSync(path.resolve(`./src/layout/footer.html`), {
-        encoding: "utf-8",
-      })
-    );*/
-
     Handlebars.registerPartial(ID.content, this.getContent());
 
     const html = template({
