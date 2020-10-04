@@ -71,10 +71,18 @@ export const transpileTsFile = (
   options: ts.TranspileOptions = {}
 ) => {
   const timeStart = Date.now();
+  const srcFile = fs.readFileSync(src).toString().trim();
+
+  // check if the source file is empty
+  if (srcFile == null || srcFile === "") {
+    return;
+  }
+
   const transpiledJs = ts.transpileModule(
     fs.readFileSync(src).toString(),
     options
   ).outputText;
+
   fs.writeFileSync(
     dest,
     config.minify ? uglifyJs.minify(transpiledJs).code : transpiledJs
