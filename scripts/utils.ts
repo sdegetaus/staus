@@ -28,15 +28,6 @@ export const removeDirContent = (dirPath: string) => {
   }
 };
 
-// NOT SURE IF NEEDED!
-// export const copyDirContent = (src: string, dest: string) => {
-//   if (fs.existsSync(src)) {
-//     fs.readdirSync(src).forEach((file) =>
-//       fs.copyFileSync(path.join(src, file), path.join(dest, file))
-//     );
-//   }
-// };
-
 /**
  * Create directory if it doesn't exist
  * @param dirPath

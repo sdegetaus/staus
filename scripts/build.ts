@@ -2,44 +2,43 @@ import * as fs from "fs";
 import { minify as htmlMinifier } from "html-minifier";
 import * as path from "path";
 import * as config from "../config.json";
+import { PATH } from "../library/consts";
 import * as utils from "./utils";
 
 const timeStart = Date.now();
 console.log("Starting build...\n");
 
-const outputPath = path.resolve(`./`, `${config.outDir}`);
-const inputPath = path.resolve(`./`, `${config.inDir}`);
-const assetsPath = path.join(inputPath, `/assets`);
-const staticPath = path.resolve(`./static`);
-
 try {
   // create or clear `outDir` folder
-  if (!fs.existsSync(outputPath)) {
-    console.log(`Out directory not found! Creating it now: "${outputPath}"`);
-    fs.mkdirSync(outputPath);
+  if (!fs.existsSync(PATH.OUTPUT_DIR)) {
+    console.log(
+      `Out directory not found! Creating it now: "${PATH.OUTPUT_DIR}"`
+    );
+    fs.mkdirSync(PATH.OUTPUT_DIR);
   } else {
-    utils.removeDirContent(outputPath);
+    utils.removeDirContent(PATH.OUTPUT_DIR);
   }
 
   utils.compileCssFile(
-    path.join(assetsPath, `/styles/index.scss`),
-    path.join(outputPath, `/style.css`)
+    path.join(PATH.ASSETS_DIR, `/styles/index.scss`),
+    path.join(PATH.OUTPUT_DIR, `/style.css`)
   );
 
   utils.transpileTsFile(
-    path.join(assetsPath, `/scripts/index.ts`),
-    path.join(outputPath, `/main.js`)
+    path.join(PATH.ASSETS_DIR, `/scripts/index.ts`),
+    path.join(PATH.OUTPUT_DIR, `/main.js`)
   );
 
   // pages
-  fs.readdirSync(path.join(inputPath, `/pages`)).forEach((file) => {
+  fs.readdirSync(PATH.PAGES_DIR).forEach((file) => {
     const extension = path.extname(file);
     const filename = path.basename(file, extension);
     if (extension === ".ts") {
+      // TODO: check if path can be simplified!
       import(`../src/pages/${filename}`)
         .then((page) => {
           fs.writeFileSync(
-            path.join(outputPath, `/${filename}.html`),
+            path.join(PATH.OUTPUT_DIR, `/${filename}.html`),
             htmlMinifier(page.default.compile(), {
               collapseWhitespace: true,
               removeComments: config.minify,
@@ -55,20 +54,23 @@ try {
     }
   });
 
-  // copy every file from the `staticPath`
-  if (fs.existsSync(staticPath)) {
-    fs.readdirSync(staticPath).forEach((file) => {
+  // copy every file from the `PATH.STATIC_DIR`
+  if (fs.existsSync(PATH.STATIC_DIR)) {
+    fs.readdirSync(PATH.STATIC_DIR).forEach((file) => {
       const filename = path.basename(file, path.extname(file)).toLowerCase();
       if (filename === "favicon") {
         // post-process favicon
       }
-      fs.copyFileSync(path.join(staticPath, file), path.join(outputPath, file));
+      fs.copyFileSync(
+        path.join(PATH.STATIC_DIR, file),
+        path.join(PATH.OUTPUT_DIR, file)
+      );
     });
   }
 
-  // copy every font from fonts directory
-  const inputFontsDir = path.join(assetsPath, "/fonts");
-  const outputFontsDir = path.join(outputPath, "/fonts");
+  // TODO: check if paths can be simplified!
+  const inputFontsDir = path.join(PATH.ASSETS_DIR, "/fonts");
+  const outputFontsDir = path.join(PATH.OUTPUT_DIR, "/fonts");
   if (fs.existsSync(inputFontsDir)) {
     utils.ensureDirSync(outputFontsDir);
     fs.readdirSync(inputFontsDir).forEach((file) =>

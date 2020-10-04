@@ -1,20 +1,16 @@
 import * as fs from "fs";
 import * as Handlebars from "handlebars";
 import * as path from "path";
+import { ID } from "./consts";
 
 export default abstract class Page {
   private props: PageProps;
-  private translations: { [key: string]: string };
+  private translations: TranslationKey;
 
-  constructor(
-    props: PageProps,
-    translations: { [key: string]: string } // todo: should be ts type!
-  ) {
+  constructor(props: PageProps, translations: TranslationKey) {
     this.props = props;
     this.translations = translations;
   }
-
-  // todo: make consts file for ids!
 
   public compile = () => {
     const template = Handlebars.compile(
@@ -31,37 +27,37 @@ export default abstract class Page {
     });
 
     Handlebars.registerPartial(
-      "head",
+      ID.head,
       fs.readFileSync(path.join(__dirname, `./templates/head.html`), {
         encoding: "utf-8",
       })
     );
 
     Handlebars.registerPartial(
-      "body",
+      ID.body,
       fs.readFileSync(path.join(__dirname, `./templates/body.html`), {
         encoding: "utf-8",
       })
     );
 
     Handlebars.registerPartial(
-      "layout",
+      ID.layout,
       fs.readFileSync(path.resolve(`./src/layout/general.html`), {
         encoding: "utf-8",
       })
     );
 
     Handlebars.registerPartial(
-      "header",
+      ID.header,
       fs.readFileSync(path.resolve(`./src/layout/header.html`), {
         encoding: "utf-8",
       })
     );
 
-    Handlebars.registerPartial("content", this.props.body.content);
+    Handlebars.registerPartial(ID.content, this.props.body.content);
 
     Handlebars.registerPartial(
-      "footer",
+      ID.footer,
       fs.readFileSync(path.resolve(`./src/layout/footer.html`), {
         encoding: "utf-8",
       })
@@ -72,7 +68,12 @@ export default abstract class Page {
       translations: this.translations,
     });
 
-    // todo: unregister
+    // unregister all partials
+    [ID.head, ID.body, ID.layout, ID.header, ID.content, ID.footer].forEach(
+      (o) => {
+        Handlebars.unregisterPartial(o);
+      }
+    );
 
     return html;
   };
@@ -88,4 +89,8 @@ type PageProps = {
     class?: string;
     content?: string;
   };
+};
+
+type TranslationKey = {
+  [key: string]: string;
 };
