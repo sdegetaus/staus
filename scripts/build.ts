@@ -4,6 +4,7 @@ import * as path from "path";
 import * as config from "../config.json";
 import { PATH } from "../library/consts";
 import * as utils from "./utils";
+import { l10n } from "../src/l10n";
 
 const timeStart = Date.now();
 console.log("Starting build...\n");
@@ -19,7 +20,7 @@ try {
     utils.removeDirContent(PATH.OUTPUT_DIR);
   }
 
-  // TODO: check if paths can be simplified!
+  // TODO: check if paths can be simplified! (and customizable names!)
   utils.compileCssFile(
     path.join(PATH.ASSETS_DIR, `/styles/index.scss`),
     path.join(PATH.OUTPUT_DIR, `/style.css`)
@@ -34,25 +35,34 @@ try {
   fs.readdirSync(PATH.PAGES_DIR).forEach((file) => {
     const extension = path.extname(file);
     const filename = path.basename(file, extension);
-    if (extension === ".ts") {
-      // TODO: check if path can be simplified!
-      import(`../src/pages/${filename}`)
-        .then((page) => {
-          fs.writeFileSync(
-            path.join(PATH.OUTPUT_DIR, `/${filename}.html`),
-            htmlMinifier(page.default.compile(), {
-              collapseWhitespace: true,
-              removeComments: config.minify,
-              minifyCSS: config.minify,
-              minifyJS: config.minify,
-              preserveLineBreaks: !config.minify,
-            })
-          );
-        })
-        .catch((e) => {
-          throw e;
-        });
-    }
+
+    Object.entries(l10n).forEach(([key, value]) => {
+      const languageDir = path.join(
+        PATH.OUTPUT_DIR,
+        // for the default language, don't make a langDirectory
+        `/${key !== config.defaultLanguage ? key : ""}`
+      );
+      utils.ensureDirSync(languageDir);
+      if (extension === ".ts") {
+        // TODO: check if path can be simplified!
+        import(`../src/pages/${filename}`)
+          .then((page) => {
+            fs.writeFileSync(
+              path.join(languageDir, `/${filename}.html`),
+              htmlMinifier(page.default.compile(key, value.messages), {
+                collapseWhitespace: true,
+                removeComments: config.minify,
+                minifyCSS: config.minify,
+                minifyJS: config.minify,
+                preserveLineBreaks: !config.minify,
+              })
+            );
+          })
+          .catch((e) => {
+            throw e;
+          });
+      }
+    });
   });
 
   // copy every file from the `PATH.STATIC_DIR`
@@ -60,7 +70,7 @@ try {
     fs.readdirSync(PATH.STATIC_DIR).forEach((file) => {
       const filename = path.basename(file, path.extname(file)).toLowerCase();
       if (filename === "favicon") {
-        // post-process favicon
+        // todo: post-process favicon
       }
       fs.copyFileSync(
         path.join(PATH.STATIC_DIR, file),

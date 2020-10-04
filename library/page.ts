@@ -2,17 +2,16 @@ import * as fs from "fs";
 import * as Handlebars from "handlebars";
 import * as path from "path";
 import { ID, PATH } from "./consts";
+import * as config from "../config.json";
 
-export default abstract class Page {
+export default class Page {
   private props: PageProps;
-  private translations: LanguageKey;
 
-  constructor(props: PageProps, translations: LanguageKey) {
+  constructor(props: PageProps) {
     this.props = props;
-    this.translations = translations;
   }
 
-  public compile = () => {
+  public compile = (language: string, messages: LanguageKey) => {
     const template = Handlebars.compile(
       fs.readFileSync(path.join(__dirname, `./templates/base.html`), {
         encoding: "utf-8",
@@ -58,8 +57,9 @@ export default abstract class Page {
 
     const html = template({
       ...this.props,
-      language: this.props.language,
-      translations: this.translations,
+      messages,
+      language,
+      defaultLanguage: config.defaultLanguage,
     });
 
     // unregister all partials
@@ -86,7 +86,6 @@ export default abstract class Page {
 }
 
 type PageProps = {
-  language?: string;
   title?: string;
   description?: string;
   bodyClass?: string;

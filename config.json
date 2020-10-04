@@ -1,5 +1,6 @@
 {
   "outDir": "./build",
   "inDir": "./src",
-  "minify": false
+  "minify": false,
+  "defaultLanguage": "en"
 }
