@@ -10,6 +10,7 @@ export default abstract class Page {
   constructor(props: PageProps, translations: TranslationKey) {
     this.props = props;
     this.translations = translations;
+    console.log(this.translations);
   }
 
   public compile = () => {
@@ -19,12 +20,12 @@ export default abstract class Page {
       })
     );
 
-    Handlebars.registerHelper("translate", (s1: string) => {
-      if (s1 == null) {
-        return "NADA"; // todo: fallback
-      }
-      return s1.toUpperCase();
-    });
+    // Handlebars.registerHelper("translate", (s1: string) => {
+    //   if (s1 == null) {
+    //     return "NADA"; // todo: fallback
+    //   }
+    //   return s1.toUpperCase();
+    // });
 
     Handlebars.registerPartial(
       ID.head,
@@ -91,6 +92,13 @@ type PageProps = {
   };
 };
 
+// todo: change location
 type TranslationKey = {
   [key: string]: string;
+};
+
+export type Translation = {
+  [locale: string]: {
+    messages: TranslationKey;
+  };
 };

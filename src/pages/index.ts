@@ -1,6 +1,7 @@
 import Page from "../../library/page";
 import * as fs from "fs";
 import * as path from "path";
+import { translations } from "../l10n";
 
 class Index extends Page {
   constructor() {
@@ -17,7 +18,7 @@ class Index extends Page {
           }),
         },
       },
-      { test: "can be translated!" }
+      translations.es.messages
     );
   }
 }

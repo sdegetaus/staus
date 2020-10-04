@@ -19,6 +19,7 @@ try {
     utils.removeDirContent(PATH.OUTPUT_DIR);
   }
 
+  // TODO: check if paths can be simplified!
   utils.compileCssFile(
     path.join(PATH.ASSETS_DIR, `/styles/index.scss`),
     path.join(PATH.OUTPUT_DIR, `/style.css`)

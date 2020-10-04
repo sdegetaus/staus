@@ -1,4 +1,5 @@
 import Page from "../../library/page";
+import { translations } from "../l10n/index";
 
 class About extends Page {
   constructor() {
@@ -13,7 +14,7 @@ class About extends Page {
           content: `<h1>About</h1><a href="/">Home</a>`,
         },
       },
-      { test: "Acerca" }
+      translations.es.messages
     );
   }
 }
