@@ -13,6 +13,7 @@ export default abstract class Staus {
   public static build = (language: LanguageDictionary, config: StausConfig) => {
     const timeStart = Date.now();
     console.log("Starting build...\n");
+
     Staus.CONFIG = config;
     Staus.PATH = {
       STAUS_DIR: __dirname,

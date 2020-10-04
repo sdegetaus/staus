@@ -19,7 +19,7 @@ export default abstract class Page {
     );
 
     Handlebars.registerHelper("link", (context, options) => {
-      console.log(context, options);
+      // console.log(context, options);
       return new Handlebars.SafeString(`<a>${context.fn(this).trim()}</a>`);
     });
 
