@@ -3,10 +3,7 @@ import * as Handlebars from "handlebars";
 import * as path from "path";
 
 export default class Layout {
-  private partials: string[];
-  constructor(partials: string[]) {
-    this.partials = partials;
-  }
+  constructor(private partials: string[]) {}
 
   public registerPartials = () => {
     this.partials.forEach((partial) => {

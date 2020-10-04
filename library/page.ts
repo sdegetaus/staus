@@ -6,11 +6,7 @@ import * as config from "../config.json";
 import Layout from "./layout";
 
 export default abstract class Page {
-  private props: PageProps;
-
-  constructor(props: PageProps) {
-    this.props = props;
-  }
+  constructor(private props: PageProps) {}
 
   public compile = (locale: string, messages: LanguageKey) => {
     const template = Handlebars.compile(
