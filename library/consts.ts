@@ -4,10 +4,7 @@ import * as config from "../config.json";
 export const ID = {
   head: "head",
   body: "body",
-  layout: "layout",
-  header: "header",
   content: "content",
-  footer: "footer",
 };
 
 export const PATH = {

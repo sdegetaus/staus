@@ -3,15 +3,16 @@ import * as Handlebars from "handlebars";
 import * as path from "path";
 import { ID, PATH } from "./consts";
 import * as config from "../config.json";
+import Layout from "./layout";
 
-export default class Page {
+export default abstract class Page {
   private props: PageProps;
 
   constructor(props: PageProps) {
     this.props = props;
   }
 
-  public compile = (language: string, messages: LanguageKey) => {
+  public compile = (locale: string, messages: LanguageKey) => {
     const template = Handlebars.compile(
       fs.readFileSync(path.join(__dirname, `./templates/base.html`), {
         encoding: "utf-8",
@@ -32,6 +33,11 @@ export default class Page {
       })
     );
 
+    this.props.layout.registerPartials();
+
+    /*
+    // TODO: remove these from here,
+    // and let them be applied from `src`
     Handlebars.registerPartial(
       ID.layout,
       fs.readFileSync(path.resolve(`./src/layout/general.html`), {
@@ -45,29 +51,28 @@ export default class Page {
         encoding: "utf-8",
       })
     );
-
-    Handlebars.registerPartial(ID.content, this.getContent());
-
-    Handlebars.registerPartial(
+    
+     Handlebars.registerPartial(
       ID.footer,
       fs.readFileSync(path.resolve(`./src/layout/footer.html`), {
         encoding: "utf-8",
       })
-    );
+    );*/
+
+    Handlebars.registerPartial(ID.content, this.getContent());
 
     const html = template({
       ...this.props,
       messages,
-      language,
+      locale,
       defaultLanguage: config.defaultLanguage,
     });
 
     // unregister all partials
-    [ID.head, ID.body, ID.layout, ID.header, ID.content, ID.footer].forEach(
-      (o) => {
-        Handlebars.unregisterPartial(o);
-      }
-    );
+    [ID.head, ID.body, ID.content].forEach((o) => {
+      Handlebars.unregisterPartial(o);
+    });
+    this.props.layout.unregisterPartials();
 
     return html;
   };
@@ -90,6 +95,7 @@ type PageProps = {
   description?: string;
   bodyClass?: string;
   content: string;
+  layout: Layout;
 };
 
 // todo: change location
