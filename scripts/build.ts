@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import { minify as htmlMinifier } from "html-minifier";
+import { minify as htmlMinifier, Options } from "html-minifier";
 import * as path from "path";
 import * as config from "../config.json";
 import { PATH } from "../library/consts";
@@ -8,6 +8,14 @@ import { l10n } from "../src/l10n";
 
 const timeStart = Date.now();
 console.log("Starting build...\n");
+
+const htmlMinifierOptions: Options = {
+  collapseWhitespace: true,
+  removeComments: config.minify,
+  minifyCSS: config.minify,
+  minifyJS: config.minify,
+  preserveLineBreaks: !config.minify,
+};
 
 try {
   // create or clear `outDir` folder
@@ -49,13 +57,10 @@ try {
           .then((page) => {
             fs.writeFileSync(
               path.join(languageDir, `/${filename}.html`),
-              htmlMinifier(page.default.compile(key, value.messages), {
-                collapseWhitespace: true,
-                removeComments: config.minify,
-                minifyCSS: config.minify,
-                minifyJS: config.minify,
-                preserveLineBreaks: !config.minify,
-              })
+              htmlMinifier(
+                page.default.compile(key, value.messages),
+                htmlMinifierOptions
+              )
             );
           })
           .catch((e) => {
