@@ -1,8 +1,15 @@
 import * as fs from "fs";
 import { minify as htmlMinifier, Options } from "html-minifier";
 import * as path from "path";
-import { LanguageDictionary, StausConfig } from "./types";
+import { LanguageDictionary } from "./types";
 import * as utils from "./utils";
+
+type StausConfig = {
+  outDir: string;
+  inDir: string;
+  minify: boolean;
+  defaultLanguage: string;
+};
 
 export default abstract class Staus {
   public static CONFIG: StausConfig;
@@ -63,7 +70,7 @@ export default abstract class Staus {
         Object.entries(language).forEach(([key, value]) => {
           const languageDir = path.join(
             Staus.PATH.OUTPUT_DIR,
-            // for the default language, don't make a langDirectory
+            // for the default language, don't make a directory
             `/${key !== config.defaultLanguage ? key : ""}`
           );
           utils.ensureDirSync(languageDir);
@@ -86,7 +93,7 @@ export default abstract class Staus {
         });
       });
 
-      // copy every file from the `Staus.PATH.STATIC_DIR`
+      // copy every file from the static directory
       if (fs.existsSync(Staus.PATH.STATIC_DIR)) {
         fs.readdirSync(Staus.PATH.STATIC_DIR).forEach((file) => {
           const filename = path
@@ -114,7 +121,6 @@ export default abstract class Staus {
           )
         );
       }
-
       console.log(`\nBuild Successful!`);
     } catch (error) {
       console.error(`\nFailed to build. See the console for more info.\n`);
@@ -125,5 +131,6 @@ export default abstract class Staus {
   };
 }
 
+// exports
 export { Layout, Page } from "./classes";
-export { LanguageDictionary, StausConfig } from "./types";
+export { LanguageDictionary } from "./types";

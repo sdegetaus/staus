@@ -84,7 +84,13 @@ export default abstract class Page {
 type PageProps = {
   title?: string;
   description?: string;
+  meta?: MetaPair[];
   bodyClass?: string;
   content: string;
   layout: Layout;
+};
+
+type MetaPair = {
+  name: string;
+  content: string;
 };

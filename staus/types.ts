@@ -7,10 +7,3 @@ export type LanguageDictionary = {
     messages: LanguageKey;
   };
 };
-
-export type StausConfig = {
-  outDir: string;
-  inDir: string;
-  minify: boolean;
-  defaultLanguage: string;
-};
