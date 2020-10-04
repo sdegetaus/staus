@@ -1,6 +1,6 @@
 import Part from "./part";
 
-export default class Head extends Part<BodyProps> {
+export default class Body extends Part<BodyProps> {
   constructor(props: BodyProps) {
     super("body.html", props);
   }

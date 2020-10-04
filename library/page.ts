@@ -16,7 +16,14 @@ export default abstract class Page {
   }
 
   public compile = () => {
+    Handlebars.registerPartial(
+      "layout",
+      fs.readFileSync(path.resolve(`./src/layout/general.html`), {
+        encoding: "utf-8",
+      })
+    );
     const template = Handlebars.compile(
+      // use __dirname?
       fs.readFileSync(path.resolve(`./library/templates/base.html`), {
         encoding: "utf-8",
       })
