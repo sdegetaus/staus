@@ -1,3 +1,3 @@
 import { Layout } from "staus";
 
-export const Main = new Layout(["main", "header", "footer"]);
+export const Main = new Layout(["main", "header", "menu", "footer"]);

@@ -1,25 +1,8 @@
 <header>
   <div class="inner">
     <div class="logo">
+      <a href="/">Taus<span>MX</span></a>
     </div>
-    <nav class="menu">
-      <ul>
-        <li>
-          {{#link href="/" title="Some title" target="_self" aria-expand="true"}}
-            {{../messages.[home.title]}}
-          {{/link}}
-        </li>
-        <li>
-          {{#link href="/about"}}
-            {{../messages.[about.title]}}
-          {{/link}}
-        </li>
-        <li>
-          {{#link}}
-            No href
-          {{/link}}
-        </li>
-      </ul>
-    </nav>
+    {{> menu}}
   </div>
 </header>

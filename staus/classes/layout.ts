@@ -7,9 +7,11 @@ export default class Layout {
 
   public registerPartials = () => {
     this.partials.forEach((partial) => {
+      const extension = path.extname(partial);
+      const filename = path.basename(partial, extension);
       Handlebars.registerPartial(
         partial,
-        fs.readFileSync(path.resolve(`./src/layout/${partial}.html`), {
+        fs.readFileSync(path.resolve(`./src/layout/${filename}.html`), {
           encoding: "utf-8",
         })
       );

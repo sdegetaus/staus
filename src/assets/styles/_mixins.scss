@@ -1,0 +1,29 @@
+@mixin global-animation {
+  transition: all 0.2s !important;
+}
+
+@mixin selection {
+  color: white;
+  background-color: $orange-base;
+  text-decoration-color: white;
+}
+
+@mixin primary-font {
+  font-family: "Oswald", sans-serif;
+}
+
+@mixin awesome-font {
+  font-family: "FontAwesome";
+}
+
+@mixin the-placeholder {
+  ::placeholder {
+    @content;
+  }
+  ::-webkit-input-placeholder {
+    @content;
+  }
+  :-ms-input-placeholder {
+    @content;
+  }
+}

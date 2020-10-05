@@ -1,1 +1,71 @@
-$red: blue;
+/* ----------------------------- */
+/* ---------- COLORS ----------- */
+/* ----------------------------- */
+
+$primary-light: #5c82a0;
+$primary-base: #1e3b5d;
+$primary-dark: #102b44;
+
+$secondary-light: #d0abe5;
+$secondary-base: #71429a;
+$secondary-dark: darken($secondary-base, 15%);
+
+$orange-light: #fdb85b;
+$orange-base: #fd7c3d;
+$orange-dark: #e1681f;
+
+$accent-base: #0366d6;
+$accent-light: lighten(#0366d6, 20%);
+$accent-dark: darken(#0366d6, 10%);
+
+// alert colors
+$error-base: #f9c8c7;
+$error-dark: #e85656;
+$error-text: darken($error-dark, 20%);
+
+$success-base: #daf1d6;
+$success-dark: #0f9c6d;
+$success-text: darken($success-dark, 10%);
+
+$warning-base: #ffefbc;
+$warning-dark: #ffbd00;
+$warning-text: darken(#bc892e, 10%);
+
+$info-base: #cbebfb;
+$info-dark: #00a8e4;
+$info-text: #0b92c3;
+
+// texts
+$text-headings: $primary-base;
+$text-body: $primary-base;
+$text-body-light: $primary-base;
+
+// backgrounds
+$bg-base: $primary-base;
+$bg-light: #f1f4f7;
+$bg-dark: $primary-dark;
+
+// borders
+$borders-light: $bg-light;
+$borders-base: darken($bg-light, 10%);
+
+/* ----------------------------- */
+/* ---------- SPACES ----------- */
+/* ----------------------------- */
+
+$space-base: 30px;
+$space-xs: $space-base / 4;
+$space-sm: $space-base / 2;
+$space-md: $space-base;
+$space-lg: $space-base + ($space-base / 2);
+
+/* ----------------------------- */
+/* ------- BREAKPOINTS --------- */
+/* ----------------------------- */
+
+$min-mobile-width: 425px - 1;
+$min-tablet-width: 768px - 1;
+$min-desktop-width: 1024px - 1;
+$max-mobile-width: $min-mobile-width + 2;
+$max-tablet-width: $min-tablet-width + 2;
+$max-desktop-width: $min-desktop-width + 2;

@@ -1,18 +1,142 @@
-@import "./_normalize.scss";
+// global
 @import "./_fonts.scss";
 @import "./_variables.scss";
+@import "./_media-queries.scss";
+@import "./_mixins.scss";
+
+// template parts
+@import "./_header.scss";
+@import "./_footer.scss";
 
 body {
-  font-family: "Oswald";
-  background-color: $red;
+  @include primary-font;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-// temp
-#main {
-  width: 800px;
-  height: 100vh;
-  margin: auto;
-  background: white;
-  color: black;
-  padding: 10px 25px;
+::selection {
+  @include selection;
+}
+
+::-moz-selection {
+  @include selection;
+}
+
+* {
+  &:focus {
+    outline: none;
+  }
+}
+
+.inner {
+  max-width: $SECTION_WIDTH;
+  padding: 0 60px;
+  width: 100%;
+
+  @include max-tablet {
+    padding: 0 40px;
+  }
+
+  @include max-mobile {
+    padding: 0 15px;
+  }
+}
+
+.section {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.vertical-space {
+  margin: 60px 0;
+
+  @include max-tablet {
+    margin: 40px 0;
+  }
+
+  @include max-mobile {
+    margin: 15px 0;
+  }
+}
+
+/* ----------------------------- */
+/* ----------- TEXTS ----------- */
+/* ----------------------------- */
+
+// all texts
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+i {
+  @include primary-font;
+  margin: 0;
+  text-decoration: none;
+}
+
+// headings
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 400;
+  color: $text-headings;
+}
+
+// body texts
+p,
+span,
+strong,
+i {
+  color: $text-body;
+}
+
+p {
+  font-weight: 300;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  @include global-animation;
+  color: $primary-base;
+  text-decoration: none;
+  &:hover {
+    color: $accent-base;
+  }
+}
+
+/* ----------------------------- */
+/* ---------- BUTTONS ---------- */
+/* ----------------------------- */
+
+button {
+  // remove default style
+  @include global-animation;
+  cursor: pointer;
+  color: $primary-dark;
+  display: inline-block;
+  text-align: center;
+  align-items: flex-start;
+  background-color: transparent;
+  padding: 0;
+  border-width: 0px;
+  border-style: none;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    color: $accent-base;
+  }
 }

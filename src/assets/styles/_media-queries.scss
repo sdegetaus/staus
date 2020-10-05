@@ -1,0 +1,85 @@
+$SECTION_WIDTH: 1024px;
+
+$HEADER_HEIGHT_DESKTOP: 100px;
+$HEADER_HEIGHT_TABLET: 75px;
+$HEADER_HEIGHT_MOBILE: 75px;
+
+$FOOTER_HEIGHT_DESKTOP: 75px;
+$FOOTER_HEIGHT_TABLET: 60px;
+$FOOTER_HEIGHT_MOBILE: 60px;
+
+/* ----------------------------- */
+/* ------------ MINS ----------- */
+/* ----------------------------- */
+
+@mixin min-mobile {
+  @media (min-width: #{$min-mobile-width}) {
+    @content;
+  }
+}
+
+@mixin min-tablet {
+  @media (min-width: #{$min-tablet-width}) {
+    @content;
+  }
+}
+
+@mixin min-desktop {
+  @media (min-width: #{$min-desktop-width}) {
+    @content;
+  }
+}
+
+/* ----------------------------- */
+/* ------------ MAXS ----------- */
+/* ----------------------------- */
+
+@mixin max-mobile {
+  @media (max-width: #{$max-mobile-width}) {
+    @content;
+  }
+}
+
+@mixin max-tablet {
+  @media (max-width: #{$max-tablet-width}) {
+    @content;
+  }
+}
+
+@mixin max-desktop {
+  @media (max-width: #{$max-desktop-width}) {
+    @content;
+  }
+}
+
+/* ----------------------------- */
+/* ---------- BETWEENS --------- */
+/* ----------------------------- */
+
+@mixin only-mobile {
+  @media (min-width: #{$min-mobile-width}) and (max-width: #{$max-tablet-width}) {
+    @content;
+  }
+}
+
+@mixin only-tablet {
+  @media (min-width: #{$min-tablet-width}) and (max-width: #{$max-desktop-width}) {
+    @content;
+  }
+}
+
+@mixin only-desktop {
+  @media (min-width: #{$min-desktop-width}) {
+    @content;
+  }
+}
+
+/* ----------------------------- */
+/* ----------- OTHERS ---------- */
+/* ----------------------------- */
+
+@mixin only-ie {
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    @content;
+  }
+}

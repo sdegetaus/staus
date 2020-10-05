@@ -1,0 +1,53 @@
+header {
+  border-bottom: 1px solid $borders-light;
+  height: $HEADER_HEIGHT_DESKTOP;
+
+  @include max-tablet {
+    height: $HEADER_HEIGHT_TABLET;
+  }
+
+  @include max-mobile {
+    height: $HEADER_HEIGHT_MOBILE;
+  }
+
+  align-items: center;
+  background-color: white;
+  @include global-animation;
+
+  .logo {
+    text-align: left;
+    width: 25%;
+    text-transform: uppercase;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    float: left;
+
+    @include max-tablet {
+      width: 50%;
+    }
+
+    a {
+      &,
+      span {
+        @include global-animation;
+      }
+
+      color: $primary-base;
+      font-size: 22px;
+      @include max-tablet {
+        font-size: 24px;
+      }
+      span {
+        color: $primary-light;
+      }
+
+      &:hover {
+        color: $secondary-base;
+        span {
+          color: $orange-base;
+        }
+      }
+    }
+  }
+}
