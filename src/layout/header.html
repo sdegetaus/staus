@@ -5,15 +5,18 @@
     <nav class="menu">
       <ul>
         <li>
-          <a href="/{{locale}}/">{{messages.[home.title]}}</a>
+          {{#link href="/" title="Some title" target="_self" aria-expand="true"}}
+            {{../messages.[home.title]}}
+          {{/link}}
         </li>
         <li>
-          <a href="/{{locale}}/about">{{messages.[about.title]}}</a>
+          {{#link href="/about"}}
+            {{../messages.[about.title]}}
+          {{/link}}
         </li>
         <li>
           {{#link}}
-          HALLO
-          {{messages.[home.title]}}
+            No href
           {{/link}}
         </li>
       </ul>
