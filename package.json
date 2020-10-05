@@ -7,11 +7,12 @@
     "url": "https://taus.mx"
   },
   "scripts": {
-    "start": "ts-node ./src/pages/index.ts",
     "build": "ts-node ./src/index.ts",
     "serve": "http-server ./build -o"
   },
   "devDependencies": {
-    "staus": "file:staus"
+    "staus": "file:staus",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
   }
 }
