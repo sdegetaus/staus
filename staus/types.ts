@@ -1,9 +1,9 @@
-export type LanguageKey = {
-  [key: string]: string;
+export type IntlData = {
+  [locale: string]: {
+    messages: MessagePair;
+  };
 };
 
-export type LanguageDictionary = {
-  [locale: string]: {
-    messages: LanguageKey;
-  };
+export type MessagePair = {
+  [key: string]: string;
 };

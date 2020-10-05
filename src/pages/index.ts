@@ -1,13 +1,13 @@
 import { Page } from "staus";
-import { MainLayout } from "../layout";
+import { Main } from "../layouts";
 
 class Index extends Page {
   constructor() {
     super({
-      title: "Home",
-      description: "Home description",
+      title: "home.title",
+      description: "home.description",
       content: "./index.html",
-      layout: MainLayout,
+      layout: Main,
     });
   }
 }

@@ -3,13 +3,13 @@ import * as Handlebars from "handlebars";
 import * as path from "path";
 import Staus from "../";
 import { ID } from "../consts";
-import { LanguageKey } from "../types";
+import { MessagePair } from "../types";
 import Layout from "./layout";
 
 export default abstract class Page {
   constructor(private props: PageProps) {}
 
-  public compile = (locale: string, messages: LanguageKey) => {
+  public compile = (locale: string, messages: MessagePair) => {
     const template = Handlebars.compile(
       fs.readFileSync(
         path.join(Staus.PATH.STAUS_DIR, `./templates/base.html`),
@@ -44,13 +44,16 @@ export default abstract class Page {
       )
     );
 
+    // register layout partials
     this.props.layout.registerPartials();
 
+    // register "base" partials
     Handlebars.registerPartial(ID.content, this.getContent());
 
-    // TODO: translate title and description!
     const html = template({
       ...this.props,
+      title: Staus.translate(this.props.title, locale),
+      description: Staus.translate(this.props.description, locale),
       messages,
       locale,
       defaultLanguage: Staus.CONFIG.defaultLanguage,

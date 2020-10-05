@@ -1,8 +1,8 @@
-import { LanguageDictionary } from "staus";
+import { IntlData } from "staus";
 import * as EnglishMessages from "./en_US.json";
 import * as SpanishMessages from "./es_MX.json";
 
-export const l10n: LanguageDictionary = {
+export const intlData: IntlData = {
   es: {
     messages: SpanishMessages,
   },

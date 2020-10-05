@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import { minify as htmlMinifier, Options } from "html-minifier";
 import * as path from "path";
-import { LanguageDictionary } from "./types";
+import { IntlData } from "./types";
 import * as utils from "./utils";
 
 type Config = {
@@ -14,8 +14,9 @@ type Config = {
 export default abstract class Staus {
   public static CONFIG: Config;
   public static PATH: { [key: string]: string };
+  private static INTL_DATA: IntlData;
 
-  public static build = (language: LanguageDictionary, config: Config) => {
+  public static build = (intlData: IntlData, config: Config) => {
     const timeStart = Date.now();
     console.log("Starting build...\n");
 
@@ -28,6 +29,7 @@ export default abstract class Staus {
       ASSETS_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}/assets`),
       PAGES_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}/pages`),
     };
+    Staus.INTL_DATA = intlData;
 
     const htmlMinifierOptions: Options = {
       collapseWhitespace: true,
@@ -67,7 +69,7 @@ export default abstract class Staus {
         const extension = path.extname(file);
         const filename = path.basename(file, extension);
 
-        Object.entries(language).forEach(([key, value]) => {
+        Object.entries(intlData).forEach(([key, value]) => {
           const languageDir = path.join(
             Staus.PATH.OUTPUT_DIR,
             // for the default language, don't make a directory
@@ -129,8 +131,17 @@ export default abstract class Staus {
       console.log(`Build took: ${Date.now() - timeStart}ms\n`);
     }
   };
+
+  // todo: is this good, nice?
+  public static translate = (id: string, locale: string) => {
+    const res = Staus.INTL_DATA[locale].messages[id];
+    if (res == null) {
+      return id;
+    }
+    return res;
+  };
 }
 
 // exports
 export { Layout, Page } from "./classes";
-export { LanguageDictionary } from "./types";
+export { IntlData, MessagePair } from "./types";

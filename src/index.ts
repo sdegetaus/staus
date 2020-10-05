@@ -1,7 +1,7 @@
 import Staus from "staus";
-import { l10n } from "./l10n";
+import { intlData } from "./intl";
 
-Staus.build(l10n, {
+Staus.build(intlData, {
   outDir: "./build",
   inDir: "./src",
   minify: false,

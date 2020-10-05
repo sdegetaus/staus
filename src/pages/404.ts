@@ -1,13 +1,13 @@
 import { Page } from "staus";
-import { MainLayout } from "../layout";
+import { Main } from "../layouts";
 
 class About extends Page {
   constructor() {
     super({
-      title: "404",
-      description: "Page not found!",
+      title: "404.title",
+      description: "404.description",
       content: "./404.html",
-      layout: MainLayout,
+      layout: Main,
     });
   }
 }
