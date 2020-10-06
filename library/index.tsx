@@ -83,11 +83,11 @@ export default abstract class Staus {
           throw new Error("No intlData set");
         }
 
-        Object.entries(Staus.INTL_DATA).forEach(([key, value]) => {
+        Object.entries(Staus.INTL_DATA).forEach(([locale, intlData]) => {
           const languageDir = path.join(
             Staus.PATH.OUTPUT_DIR,
             // for the default language, don't make a directory
-            `/${key !== config.defaultLanguage ? key : ""}`
+            `/${locale !== config.defaultLanguage ? locale : ""}`
           );
           utils.ensureDirSync(languageDir);
           if (extension === ".tsx") {
@@ -98,7 +98,7 @@ export default abstract class Staus {
                   path.join(languageDir, `/${filename.toLowerCase()}.html`), // todo: translate slug!
                   htmlMinifier(
                     ReactDOMServer.renderToStaticMarkup(
-                      <Html locale={"test"}>
+                      <Html locale={locale}>
                         <Head></Head>
                         <Body>{page.default()}</Body>
                       </Html>
