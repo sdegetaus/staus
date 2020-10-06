@@ -1,7 +1,10 @@
 import React from "react";
 
 export default class Intl extends React.Component<IntlProps> {
-  public static messages: MessagePair = null;
+  public static defaultLocale: string;
+  public static activeLocale: string;
+  public static baseUrl: string;
+  private static messages: MessagePair = null;
 
   // convert to high-order component:
   // https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775

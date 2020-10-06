@@ -6,6 +6,7 @@ import { INPUT_DIR, OUTPUT_DIR } from "../consts";
 import Root from "../parts";
 import fsUtil from "../utils/fs-util";
 import configUtil from "../utils/config-util";
+import Intl from "../intl";
 
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk
@@ -35,6 +36,8 @@ async function build() {
 
     // enqueue css & js
 
+    Intl.defaultLocale = CONFIG.defaultLocale; // test
+
     // build pages
     const pageFiles = await fsPromise.readdir(
       path.join(PATH.INPUT_DIR, "/pages")
@@ -43,6 +46,7 @@ async function build() {
       const extension = path.extname(file);
       const filename = path.basename(file, extension);
       for (const locale of CONFIG.locales) {
+        Intl.activeLocale = locale; // test
         const languageDir = path.join(
           PATH.OUTPUT_DIR,
           // for the default language, don't make a directory
