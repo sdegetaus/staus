@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { readdir } from "promise-fs";
+import fsPromise from "promise-fs";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { Body, Head, Html } from "../parts";
@@ -43,7 +43,9 @@ interface Config {
     // enqueue css & js
 
     // build pages
-    const pageFiles = await readdir(path.join(PATH.INPUT_DIR, "/pages"));
+    const pageFiles = await fsPromise.readdir(
+      path.join(PATH.INPUT_DIR, "/pages")
+    );
     for (const file of pageFiles) {
       const extension = path.extname(file);
       const filename = path.basename(file, extension);
