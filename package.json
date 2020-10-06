@@ -7,6 +7,7 @@
     "url": "https://taus.mx"
   },
   "scripts": {
+    "root": "ts-node ./library/scripts/build.ts",
     "build": "ts-node ./src/index.ts",
     "serve": "http-server ./build -o"
   },

@@ -4,6 +4,9 @@ import path from "path";
 import { IntlData } from "./types";
 import * as utils from "./utils";
 
+// todo: use this eventually (colored cli)
+// https://www.npmjs.com/package/chalk
+
 type Config = {
   outDir: string;
   inDir: string;
@@ -28,7 +31,6 @@ export default abstract class Staus {
 
     Staus.CONFIG = config;
     Staus.PATH = {
-      STAUS_DIR: __dirname,
       OUTPUT_DIR: path.resolve(`./`, `${Staus.CONFIG.outDir}`),
       INPUT_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}`),
       STATIC_DIR: path.resolve(`./static`),

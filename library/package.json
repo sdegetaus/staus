@@ -6,6 +6,9 @@
     "name": "Santiago Degetau",
     "url": "https://taus.mx"
   },
+  "scripts": {
+    "build": "ts-node ./scripts/build.ts"
+  },
   "devDependencies": {
     "@types/html-minifier": "^4.0.0",
     "@types/node": "^14.11.2",
