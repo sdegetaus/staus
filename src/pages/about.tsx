@@ -1,24 +1,12 @@
 import React from "react";
-import { Page } from "library";
+import Layout from "../layout";
 
-class About extends Page {
-  constructor() {
-    super({
-      title: "about.title",
-      description: "about.description",
-    });
-  }
-
-  public render = () => {
-    return (
+export default () => {
+  return (
+    <Layout>
       <>
         <h1>About</h1>
-        <p>
-          Page: {"<"}About{"/>"} content
-        </p>
       </>
-    );
-  };
-}
-
-export default new About();
+    </Layout>
+  );
+};

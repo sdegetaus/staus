@@ -3,6 +3,9 @@ import { minify as htmlMinifier, Options } from "html-minifier";
 import path from "path";
 import { IntlData } from "./types";
 import * as utils from "./utils";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import { Body, Head, Html } from "./parts";
 
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk
@@ -94,7 +97,12 @@ export default abstract class Staus {
                 fs.writeFileSync(
                   path.join(languageDir, `/${filename.toLowerCase()}.html`), // todo: translate slug!
                   htmlMinifier(
-                    page.default.compile(key, value.messages),
+                    ReactDOMServer.renderToStaticMarkup(
+                      <Html locale={"test"}>
+                        <Head></Head>
+                        <Body>{page.default()}</Body>
+                      </Html>
+                    ),
                     htmlMinifierOptions
                   )
                 );
@@ -156,5 +164,4 @@ export default abstract class Staus {
 
 // exports
 export { Link } from "./components";
-export { default as Page } from "./page";
 export { IntlData, MessagePair } from "./types";

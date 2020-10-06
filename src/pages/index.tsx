@@ -1,24 +1,33 @@
 import React from "react";
-import { Page } from "library";
 import Layout from "../layout";
 
-class Index extends Page {
-  constructor() {
-    super({
-      title: "home.title",
-      description: "home.description",
-    });
-  }
+export default () => {
+  return (
+    <Layout>
+      <>
+        <h1>Home</h1>
+      </>
+    </Layout>
+  );
+};
 
-  public render = () => {
-    return (
-      <Layout>
-        <>
-          <h1>Home</h1>
-        </>
-      </Layout>
-    );
-  };
-}
+// class Index extends Page {
+//   constructor() {
+//     super({
+//       title: "home.title",
+//       description: "home.description",
+//     });
+//   }
 
-export default new Index();
+//   public render = () => {
+//     return (
+//       <Layout>
+//         <>
+//           <h1>Home</h1>
+//         </>
+//       </Layout>
+//     );
+//   };
+// }
+
+// export default new Index();
