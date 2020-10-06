@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "staus";
+import { Link } from "library";
 
 export default () => {
   return (

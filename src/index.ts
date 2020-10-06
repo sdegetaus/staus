@@ -1,4 +1,4 @@
-import Staus from "staus";
+import Staus from "library";
 import { intlData } from "./intl";
 
 Staus.setIntlData(intlData);

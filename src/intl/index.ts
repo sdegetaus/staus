@@ -1,4 +1,4 @@
-import { IntlData } from "staus";
+import { IntlData } from "library";
 import * as EnglishMessages from "./en_US.json";
 import * as SpanishMessages from "./es_MX.json";
 

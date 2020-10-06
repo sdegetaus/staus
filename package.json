@@ -13,7 +13,7 @@
   "devDependencies": {
     "@types/react": "^16.9.51",
     "react": "^16.13.1",
-    "staus": "file:staus",
+    "library": "file:library",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
   }

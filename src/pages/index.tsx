@@ -1,5 +1,5 @@
 import React from "react";
-import { Page } from "staus";
+import { Page } from "library";
 import Layout from "../layout";
 
 class Index extends Page {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Page } from "staus";
+import { Page } from "library";
 
 class About extends Page {
   constructor() {
