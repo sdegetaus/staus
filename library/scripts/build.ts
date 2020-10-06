@@ -1,29 +1,21 @@
 import fs from "fs";
 import path from "path";
 import fsPromise from "promise-fs";
-import React from "react";
 import ReactDOMServer from "react-dom/server";
-import { Body, Head, Html } from "../parts";
+import Root from "../parts";
 import * as utils from "../utils";
+import * as cmn from "./common";
 
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk
-
-interface Config {
-  outDir: string;
-  inDir: string;
-  minify: boolean;
-  defaultLanguage: string;
-  locales: string[];
-}
 
 (async function () {
   const timeStart = Date.now();
   console.log("Starting build...\n");
 
   try {
-    const ROOT = path.resolve(`${process.cwd()}/`);
-    const CONFIG: Config = await import(path.join(ROOT, `staus.config.json`)); // todo: defaults
+    const ROOT = cmn.getRootPath();
+    const CONFIG = await cmn.getConfig();
     const PATH = {
       OUTPUT_DIR: path.resolve(ROOT, `${CONFIG.outDir}`),
       INPUT_DIR: path.resolve(ROOT, `${CONFIG.inDir}`),
@@ -62,12 +54,7 @@ interface Config {
 
           fs.writeFileSync(
             path.join(languageDir, `/${filename.toLowerCase()}.html`), // todo: translate slug!
-            ReactDOMServer.renderToStaticMarkup(
-              <Html locale={locale}>
-                <Head></Head>
-                <Body>{page.default({ locale })}</Body>
-              </Html>
-            )
+            ReactDOMServer.renderToStaticMarkup(Root({ locale, page }))
           );
         }
       }

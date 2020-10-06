@@ -7,8 +7,8 @@
     "url": "https://taus.mx"
   },
   "scripts": {
-    "root": "ts-node ./library/scripts/build.ts",
-    "build": "ts-node ./library/scripts/build.tsx",
+    "build": "cd ./library && npm run build",
+    "watch": "cd ./library && npm run watch",
     "serve": "http-server ./build -o"
   },
   "devDependencies": {
