@@ -1,24 +1,26 @@
 import path from "path";
+import * as utils from "../utils";
 
-// TODO: clean
-// How to get the root of project which installed my npm module?
-// https://stackoverflow.com/a/57102773
-export const getRootPath = () => {
-  const fullPath = path.dirname(require.main.filename);
-  const regexResp = /^(.*?)library/.exec(fullPath);
-  return regexResp ? regexResp[1] : fullPath;
+/**
+ * Get the project's configuration.
+ */
+export const getConfig = async (): Promise<StausConfig> => {
+  return {
+    ...defaultStausConfig,
+    ...((await import(
+      path.join(utils.getRootPath(), `staus.config.json`)
+    )) as StausConfig),
+  };
 };
 
-export const getConfig = async () => {
-  return (await import(
-    path.join(getRootPath(), `staus.config.json`)
-  )) as Config; // todo: defaults
+const defaultStausConfig: StausConfig = {
+  minify: true,
+  defaultLocale: "en",
+  locales: ["en"],
 };
 
-interface Config {
-  outDir: string;
-  inDir: string;
+interface StausConfig {
   minify: boolean;
-  defaultLanguage: string;
+  defaultLocale: string;
   locales: string[];
 }

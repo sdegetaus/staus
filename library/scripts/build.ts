@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import fsPromise from "promise-fs";
 import ReactDOMServer from "react-dom/server";
+import { INPUT_DIR, OUTPUT_DIR } from "../consts";
 import Root from "../parts";
 import * as utils from "../utils";
 import * as cmn from "./common";
@@ -9,18 +10,20 @@ import * as cmn from "./common";
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk
 
-(async function () {
+async function build() {
   const timeStart = Date.now();
   console.log("Starting build...\n");
 
   try {
-    const ROOT = cmn.getRootPath();
+    const ROOT = utils.getRootPath();
     const CONFIG = await cmn.getConfig();
     const PATH = {
-      OUTPUT_DIR: path.resolve(ROOT, `${CONFIG.outDir}`),
-      INPUT_DIR: path.resolve(ROOT, `${CONFIG.inDir}`),
+      OUTPUT_DIR: path.resolve(ROOT, `${OUTPUT_DIR}`),
+      INPUT_DIR: path.resolve(ROOT, `${INPUT_DIR}`),
       STATIC_DIR: path.resolve(ROOT, `./static`),
     };
+
+    console.log("##", CONFIG.minify);
 
     // create or clear the build folder
     if (!fs.existsSync(PATH.OUTPUT_DIR)) {
@@ -45,7 +48,7 @@ import * as cmn from "./common";
         const languageDir = path.join(
           PATH.OUTPUT_DIR,
           // for the default language, don't make a directory
-          `/${locale !== CONFIG.defaultLanguage ? locale : ""}`
+          `/${locale !== CONFIG.defaultLocale ? locale : ""}`
         );
         utils.ensureDirSync(languageDir);
         if (extension === ".tsx") {
@@ -83,7 +86,10 @@ import * as cmn from "./common";
   } finally {
     console.log(`Build took: ${Date.now() - timeStart}ms\n`);
   }
-})();
+}
+
+build();
+export default build;
 
 // TODO: add to build pipeline
 

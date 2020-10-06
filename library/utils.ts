@@ -86,3 +86,13 @@ export const transpileTsFile = (
   );
   console.log(`Compiling JavaScript took: ${Date.now() - timeStart}ms`);
 };
+
+/**
+ * Get the root path
+ * https://stackoverflow.com/a/57102773
+ */
+export const getRootPath = () => {
+  const fullPath = path.dirname(require.main.filename);
+  const regexResp = /^(.*?)library/.exec(fullPath);
+  return regexResp ? regexResp[1] : fullPath;
+};

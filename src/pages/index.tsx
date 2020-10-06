@@ -1,10 +1,10 @@
 import { Intl } from "library";
 import React from "react";
-import { intlData } from "../intl";
+import { locales } from "../intl";
 import Layout from "../layout";
 
 export default (props: PageProps) => {
-  Intl.connectIntl(intlData[props.locale].messages);
+  Intl.connect(locales[props.locale].messages);
   return (
     <Layout>
       <h1>

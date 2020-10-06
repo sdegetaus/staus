@@ -1,8 +1,8 @@
 import fs from "fs";
-import * as cmn from "./common";
 import path from "path";
+import * as utils from "../utils";
 
-fs.watch(path.resolve(cmn.getRootPath(), "./src"), (eventType, filename) => {
+fs.watch(path.resolve(utils.getRootPath(), "./src"), (eventType, filename) => {
   console.log("\nThe file", filename, "was modified!");
   console.log("The type of change was:", eventType);
 });
