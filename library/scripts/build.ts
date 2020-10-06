@@ -4,8 +4,8 @@ import fsPromise from "promise-fs";
 import ReactDOMServer from "react-dom/server";
 import { INPUT_DIR, OUTPUT_DIR } from "../consts";
 import Root from "../parts";
-import * as utils from "../utils";
-import * as cmn from "./common";
+import fsUtil from "../utils/fs-util";
+import configUtil from "../utils/config-util";
 
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk
@@ -15,8 +15,8 @@ async function build() {
   console.log("Starting build...\n");
 
   try {
-    const ROOT = utils.getRootPath();
-    const CONFIG = await cmn.getConfig();
+    const ROOT = fsUtil.getRootPath();
+    const CONFIG = await configUtil.getConfig();
     const PATH = {
       OUTPUT_DIR: path.resolve(ROOT, `${OUTPUT_DIR}`),
       INPUT_DIR: path.resolve(ROOT, `${INPUT_DIR}`),
@@ -30,7 +30,7 @@ async function build() {
       );
       fs.mkdirSync(PATH.OUTPUT_DIR);
     } else {
-      utils.removeDirContent(PATH.OUTPUT_DIR);
+      fsUtil.removeDirContent(PATH.OUTPUT_DIR);
     }
 
     // enqueue css & js
@@ -48,7 +48,7 @@ async function build() {
           // for the default language, don't make a directory
           `/${locale !== CONFIG.defaultLocale ? locale : ""}`
         );
-        utils.ensureDirSync(languageDir);
+        fsUtil.ensureDirSync(languageDir);
         if (extension === ".tsx") {
           const pagePath = path.join(PATH.INPUT_DIR, `/pages/${filename}`);
           const page = await import(pagePath);

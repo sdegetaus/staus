@@ -1,16 +1,16 @@
 import path from "path";
-import * as utils from "../utils";
+import fsUtil from "../utils/fs-util";
 
 /**
  * Get the project's configuration.
  */
-export const getConfig = async (): Promise<StausConfig> => {
+const getConfig = async (): Promise<StausConfig> => {
   return {
     minify: true,
     defaultLocale: "en",
     locales: ["en"],
     ...((await import(
-      path.join(utils.getRootPath(), `staus.config.json`)
+      path.join(fsUtil.getRootPath(), `staus.config.json`)
     )) as StausConfig),
   };
 };
@@ -20,3 +20,5 @@ interface StausConfig {
   defaultLocale: string;
   locales: string[];
 }
+
+export default { getConfig };
