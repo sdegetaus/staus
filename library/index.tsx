@@ -1,11 +1,11 @@
 import fs from "fs";
 import { minify as htmlMinifier, Options } from "html-minifier";
 import path from "path";
-import { IntlData } from "./types";
-import * as utils from "./utils";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { Body, Head, Html } from "./parts";
+import { IntlData } from "./types";
+import * as utils from "./utils";
 
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk

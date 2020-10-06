@@ -42,6 +42,9 @@ import * as utils from "../utils";
         );
       });
     }
+
+    // fonts?
+
     console.log(`\nBuild Successful!`);
   } catch (e) {
     console.error(`\nFailed to build. See the console for more info.\n`);
