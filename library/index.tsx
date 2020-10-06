@@ -4,42 +4,44 @@ import path from "path";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { Body, Head, Html } from "./parts";
-import { IntlData } from "./types";
 import * as utils from "./utils";
 
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk
 
-type Config = {
-  outDir: string;
-  inDir: string;
-  minify: boolean;
-  defaultLanguage: string;
-};
+/*
+
+// type Config = {
+//   outDir: string;
+//   inDir: string;
+//   minify: boolean;
+//   defaultLanguage: string;
+//   languages: string[];
+// };
 
 export default abstract class Staus {
-  public static CONFIG: Config;
-  public static PATH: { [key: string]: string };
-  private static INTL_DATA: IntlData = null;
+  // public static CONFIG: Config;
+  // public static PATH: { [key: string]: string };
+  // private static INTL_DATA: IntlData = null;
 
-  public static setIntlData = (data: IntlData) => {
-    if (Staus.INTL_DATA === null) {
-      Staus.INTL_DATA = data;
-    }
-  };
+  // public static setIntlData = (data: IntlData) => {
+  //   if (Staus.INTL_DATA === null) {
+  //     Staus.INTL_DATA = data;
+  //   }
+  // };
 
   public static build = (config: Config) => {
-    const timeStart = Date.now();
-    console.log("Starting build...\n");
+    // const timeStart = Date.now();
+    // console.log("Starting build...\n");
 
-    Staus.CONFIG = config;
-    Staus.PATH = {
-      OUTPUT_DIR: path.resolve(`./`, `${Staus.CONFIG.outDir}`),
-      INPUT_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}`),
-      STATIC_DIR: path.resolve(`./static`),
-      ASSETS_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}/assets`),
-      PAGES_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}/pages`),
-    };
+    // Staus.CONFIG = config;
+    // Staus.PATH = {
+    //   OUTPUT_DIR: path.resolve(`./`, `${Staus.CONFIG.outDir}`),
+    //   INPUT_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}`),
+    //   STATIC_DIR: path.resolve(`./static`),
+    //   ASSETS_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}/assets`),
+    //   PAGES_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}/pages`),
+    // };
 
     const htmlMinifierOptions: Options = {
       collapseWhitespace: true,
@@ -50,15 +52,15 @@ export default abstract class Staus {
     };
 
     try {
-      // create or clear `outDir` folder
-      if (!fs.existsSync(Staus.PATH.OUTPUT_DIR)) {
-        console.log(
-          `Out directory not found! Creating it now: "${Staus.PATH.OUTPUT_DIR}"`
-        );
-        fs.mkdirSync(Staus.PATH.OUTPUT_DIR);
-      } else {
-        utils.removeDirContent(Staus.PATH.OUTPUT_DIR);
-      }
+      // // create or clear `outDir` folder
+      // if (!fs.existsSync(Staus.PATH.OUTPUT_DIR)) {
+      //   console.log(
+      //     `Out directory not found! Creating it now: "${Staus.PATH.OUTPUT_DIR}"`
+      //   );
+      //   fs.mkdirSync(Staus.PATH.OUTPUT_DIR);
+      // } else {
+      //   utils.removeDirContent(Staus.PATH.OUTPUT_DIR);
+      // }
 
       // TODO: check if paths can be simplified! (and customizable names!)
       // handle non-existing files as well!
@@ -79,11 +81,11 @@ export default abstract class Staus {
         const extension = path.extname(file);
         const filename = path.basename(file, extension);
 
-        if (Staus.INTL_DATA === null) {
-          throw new Error("No intlData set");
-        }
+        // if (Staus.INTL_DATA === null) {
+        //   throw new Error("No intlData set");
+        // }
 
-        Object.entries(Staus.INTL_DATA).forEach(([locale, intlData]) => {
+        Staus.CONFIG.languages.forEach((locale) => {
           const languageDir = path.join(
             Staus.PATH.OUTPUT_DIR,
             // for the default language, don't make a directory
@@ -100,7 +102,7 @@ export default abstract class Staus {
                     ReactDOMServer.renderToStaticMarkup(
                       <Html locale={locale}>
                         <Head></Head>
-                        <Body>{page.default()}</Body>
+                        <Body>{page.default({ locale })}</Body>
                       </Html>
                     ),
                     htmlMinifierOptions
@@ -153,15 +155,17 @@ export default abstract class Staus {
   };
 
   // todo: is this good, nice?
-  public static translate = (id: string, locale: string) => {
-    const res = Staus.INTL_DATA[locale].messages[id];
-    if (res == null) {
-      return id;
-    }
-    return res;
-  };
+  // public static translate = (id: string, locale: string) => {
+  //   const res = Staus.INTL_DATA[locale].messages[id];
+  //   if (res == null) {
+  //     return id;
+  //   }
+  //   return res;
+  // };
 }
+*/
 
 // exports
+export { default as Intl } from "./intl";
 export { Link } from "./components";
 export { IntlData, MessagePair } from "./types";

@@ -13,5 +13,5 @@ export default (props: LayoutProps) => {
 };
 
 type LayoutProps = {
-  children?: JSX.Element;
+  children?: JSX.Element | JSX.Element[];
 };

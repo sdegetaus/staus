@@ -1,33 +1,19 @@
+import { Intl } from "library";
 import React from "react";
+import { intlData } from "../intl";
 import Layout from "../layout";
 
-export default () => {
+export default (props: PageProps) => {
+  Intl.injectIntl(intlData[props.locale].messages);
   return (
     <Layout>
-      <>
-        <h1>Home</h1>
-      </>
+      <h1>
+        <Intl id="home.title" />
+      </h1>
     </Layout>
   );
 };
 
-// class Index extends Page {
-//   constructor() {
-//     super({
-//       title: "home.title",
-//       description: "home.description",
-//     });
-//   }
-
-//   public render = () => {
-//     return (
-//       <Layout>
-//         <>
-//           <h1>Home</h1>
-//         </>
-//       </Layout>
-//     );
-//   };
-// }
-
-// export default new Index();
+interface PageProps {
+  locale: string;
+}
