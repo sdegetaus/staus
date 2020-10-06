@@ -28,7 +28,7 @@ export const removeDirContent = (dirPath: string) => {
 };
 
 /**
- * Create directory if it doesn't exist
+ * Synchronously create directory if it doesn't exist
  * @param dirPath
  */
 export const ensureDirSync = (dirPath: string) => {

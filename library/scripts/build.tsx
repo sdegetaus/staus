@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { readdir } from "promise-fs";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import { Body, Head, Html } from "../parts";
@@ -13,7 +14,7 @@ interface Config {
   inDir: string;
   minify: boolean;
   defaultLanguage: string;
-  languages: string[];
+  locales: string[];
 }
 
 (async function () {
@@ -42,11 +43,11 @@ interface Config {
     // enqueue css & js
 
     // build pages
-    fs.readdirSync(path.join(PATH.INPUT_DIR, "/pages")).forEach((file) => {
+    const pageFiles = await readdir(path.join(PATH.INPUT_DIR, "/pages"));
+    for (const file of pageFiles) {
       const extension = path.extname(file);
       const filename = path.basename(file, extension);
-
-      CONFIG.languages.forEach((locale) => {
+      for (const locale of CONFIG.locales) {
         const languageDir = path.join(
           PATH.OUTPUT_DIR,
           // for the default language, don't make a directory
@@ -55,24 +56,20 @@ interface Config {
         utils.ensureDirSync(languageDir);
         if (extension === ".tsx") {
           const pagePath = path.join(PATH.INPUT_DIR, `/pages/${filename}`);
-          import(pagePath)
-            .then((page) => {
-              fs.writeFileSync(
-                path.join(languageDir, `/${filename.toLowerCase()}.html`), // todo: translate slug!
-                ReactDOMServer.renderToStaticMarkup(
-                  <Html locale={locale}>
-                    <Head></Head>
-                    <Body>{page.default({ locale })}</Body>
-                  </Html>
-                )
-              );
-            })
-            .catch((e) => {
-              throw e;
-            });
+          const page = await import(pagePath);
+
+          fs.writeFileSync(
+            path.join(languageDir, `/${filename.toLowerCase()}.html`), // todo: translate slug!
+            ReactDOMServer.renderToStaticMarkup(
+              <Html locale={locale}>
+                <Head></Head>
+                <Body>{page.default({ locale })}</Body>
+              </Html>
+            )
+          );
         }
-      });
-    });
+      }
+    }
 
     // copy all from the static directory
     if (fs.existsSync(PATH.STATIC_DIR)) {

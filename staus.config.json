@@ -3,5 +3,5 @@
   "inDir": "./src",
   "minify": false,
   "defaultLanguage": "en",
-  "languages": ["en", "es"]
+  "locales": ["en", "es"]
 }
