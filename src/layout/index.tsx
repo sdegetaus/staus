@@ -2,7 +2,7 @@ import React from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 
-export default (props: Props) => {
+export default (props: LayoutProps) => {
   return (
     <div id="main">
       <Header />
@@ -12,6 +12,6 @@ export default (props: Props) => {
   );
 };
 
-type Props = {
+type LayoutProps = {
   children?: JSX.Element;
 };
