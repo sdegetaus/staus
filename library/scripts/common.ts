@@ -6,17 +6,13 @@ import * as utils from "../utils";
  */
 export const getConfig = async (): Promise<StausConfig> => {
   return {
-    ...defaultStausConfig,
+    minify: true,
+    defaultLocale: "en",
+    locales: ["en"],
     ...((await import(
       path.join(utils.getRootPath(), `staus.config.json`)
     )) as StausConfig),
   };
-};
-
-const defaultStausConfig: StausConfig = {
-  minify: true,
-  defaultLocale: "en",
-  locales: ["en"],
 };
 
 interface StausConfig {

@@ -23,8 +23,6 @@ async function build() {
       STATIC_DIR: path.resolve(ROOT, `./static`),
     };
 
-    console.log("##", CONFIG.minify);
-
     // create or clear the build folder
     if (!fs.existsSync(PATH.OUTPUT_DIR)) {
       console.log(
