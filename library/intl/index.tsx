@@ -1,19 +1,22 @@
 import React from "react";
-import { IntlData, MessagePair } from "../types";
+import { MessagePair } from "../types";
 
-// TODO: clean up
-class Intl extends React.Component<Props, State> {
+class Intl extends React.Component<Props> {
   public static messages: MessagePair = null;
-  public static injectIntl = (messages: MessagePair) => {
+
+  // convert to high-order component:
+  // https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775
+  public static connectIntl = (messages: MessagePair) => {
     Intl.messages = messages;
   };
-  test = () => {
-    console.log("inject");
+
+  resolveTranslation = () => {
     const res = Intl.messages[this.props.id];
     return res == null ? this.props.id : res;
   };
+
   render() {
-    return <>{this.test()}</>;
+    return <>{this.resolveTranslation()}</>;
   }
 }
 export default Intl;
@@ -21,5 +24,3 @@ export default Intl;
 interface Props {
   id: string;
 }
-
-interface State {}

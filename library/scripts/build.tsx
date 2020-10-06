@@ -5,13 +5,16 @@ import ReactDOMServer from "react-dom/server";
 import { Body, Head, Html } from "../parts";
 import * as utils from "../utils";
 
-type Config = {
+// todo: use this eventually (colored cli)
+// https://www.npmjs.com/package/chalk
+
+interface Config {
   outDir: string;
   inDir: string;
   minify: boolean;
   defaultLanguage: string;
   languages: string[];
-};
+}
 
 (async function () {
   const timeStart = Date.now();
@@ -39,7 +42,6 @@ type Config = {
     // enqueue css & js
 
     // build pages
-    // pages
     fs.readdirSync(path.join(PATH.INPUT_DIR, "/pages")).forEach((file) => {
       const extension = path.extname(file);
       const filename = path.basename(file, extension);
@@ -52,10 +54,8 @@ type Config = {
         );
         utils.ensureDirSync(languageDir);
         if (extension === ".tsx") {
-          // TODO: check if path can be optimized!
-          const test = path.join(PATH.INPUT_DIR, `/pages/${filename}`);
-          console.log(test);
-          import(`${test}`)
+          const pagePath = path.join(PATH.INPUT_DIR, `/pages/${filename}`);
+          import(pagePath)
             .then((page) => {
               fs.writeFileSync(
                 path.join(languageDir, `/${filename.toLowerCase()}.html`), // todo: translate slug!
@@ -98,3 +98,32 @@ type Config = {
     console.log(`Build took: ${Date.now() - timeStart}ms\n`);
   }
 })();
+
+// TODO: add to build pipeline
+
+// TODO: check if paths can be simplified! (and customizable names!)
+// handle non-existing files as well!
+// utils.compileCssFile(
+//   path.join(Staus.PATH.ASSETS_DIR, `/styles/index.scss`),
+//   path.join(Staus.PATH.OUTPUT_DIR, `/style.css`),
+//   config.minify
+// );
+
+// utils.transpileTsFile(
+//   path.join(Staus.PATH.ASSETS_DIR, `/scripts/index.ts`),
+//   path.join(Staus.PATH.OUTPUT_DIR, `/main.js`),
+//   config.minify
+// );
+
+// TODO: check if paths can be simplified!
+// const inputFontsDir = path.join(Staus.PATH.ASSETS_DIR, "/fonts");
+// const outputFontsDir = path.join(Staus.PATH.OUTPUT_DIR, "/fonts");
+// if (fs.existsSync(inputFontsDir)) {
+//   utils.ensureDirSync(outputFontsDir);
+//   fs.readdirSync(inputFontsDir).forEach((file) =>
+//     fs.copyFileSync(
+//       path.join(inputFontsDir, file),
+//       path.join(outputFontsDir, file)
+//     )
+//   );
+// }

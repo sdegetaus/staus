@@ -4,7 +4,7 @@ import { intlData } from "../intl";
 import Layout from "../layout";
 
 export default (props: PageProps) => {
-  Intl.injectIntl(intlData[props.locale].messages);
+  Intl.connectIntl(intlData[props.locale].messages);
   return (
     <Layout>
       <h1>
