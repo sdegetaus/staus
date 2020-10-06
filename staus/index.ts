@@ -76,12 +76,12 @@ export default abstract class Staus {
             `/${key !== config.defaultLanguage ? key : ""}`
           );
           utils.ensureDirSync(languageDir);
-          if (extension === ".ts") {
-            // TODO: check if path can be simplified!
+          if (extension === ".tsx") {
+            // TODO: check if path can be optimized!
             import(`../src/pages/${filename}`)
               .then((page) => {
                 fs.writeFileSync(
-                  path.join(languageDir, `/${filename}.html`),
+                  path.join(languageDir, `/${filename.toLowerCase()}.html`), // todo: translate slug!
                   htmlMinifier(
                     page.default.compile(key, value.messages),
                     htmlMinifierOptions
@@ -123,6 +123,7 @@ export default abstract class Staus {
           )
         );
       }
+
       console.log(`\nBuild Successful!`);
     } catch (error) {
       console.error(`\nFailed to build. See the console for more info.\n`);
@@ -143,5 +144,5 @@ export default abstract class Staus {
 }
 
 // exports
-export { Layout, Page } from "./classes";
+export { default as Page } from "./page";
 export { IntlData, MessagePair } from "./types";

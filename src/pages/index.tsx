@@ -1,15 +1,24 @@
+import React from "react";
 import { Page } from "staus";
-import { Main } from "../layouts";
+import Layout from "../layout";
 
 class Index extends Page {
   constructor() {
     super({
       title: "home.title",
       description: "home.description",
-      content: "./index.html",
-      layout: Main,
     });
   }
+
+  public render = () => {
+    return (
+      <Layout>
+        <>
+          <h1>Home</h1>
+        </>
+      </Layout>
+    );
+  };
 }
 
 export default new Index();

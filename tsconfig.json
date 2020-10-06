@@ -13,6 +13,7 @@
     "allowJs": false,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "jsx": "react"
   }
 }

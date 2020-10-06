@@ -1,43 +1,52 @@
-import * as fs from "fs";
-import * as Handlebars from "handlebars";
-import * as path from "path";
-import Staus from "../";
-import { ID } from "../consts";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
 import { MessagePair } from "../types";
-import Layout from "./layout";
+import Body from "./Parts/Body";
+import Head from "./Parts/Head";
+import Html from "./Parts/Html";
 
 export default abstract class Page {
-  private locale: string;
   constructor(private props: PageProps) {}
 
-  public compile = (locale: string, messages: MessagePair) => {
-    this.locale = locale;
+  abstract render(): React.ReactElement;
 
-    const template = Handlebars.compile(
-      fs.readFileSync(
-        path.join(Staus.PATH.STAUS_DIR, `./templates/base.html`),
-        {
-          encoding: "utf-8",
-        }
-      )
+  public compile = (locale: string, messages: MessagePair): string => {
+    return ReactDOMServer.renderToStaticMarkup(
+      Html({ locale, head: Head({}), body: Body({ children: this.render() }) })
     );
-
-    this.registerAll();
-
-    const html = template({
-      ...this.props,
-      title: Staus.translate(this.props.title, locale),
-      description: Staus.translate(this.props.description, locale),
-      messages,
-      locale,
-      defaultLanguage: Staus.CONFIG.defaultLanguage,
-    });
-
-    this.unregisterAll();
-
-    return html;
   };
 
+  // TODO: clean me up!
+
+  // public compile = (locale: string, messages: MessagePair) => {
+  //   this.locale = locale;
+
+  //   const template = Handlebars.compile(
+  //     fs.readFileSync(
+  //       path.join(Staus.PATH.STAUS_DIR, `./templates/base.html`),
+  //       {
+  //         encoding: "utf-8",
+  //       }
+  //     )
+  //   );
+
+  //   this.registerAll();
+
+  //   const html = template({
+  //     ...this.props,
+  //     title: Staus.translate(this.props.title, locale),
+  //     description: Staus.translate(this.props.description, locale),
+  //     messages,
+  //     locale,
+  //     defaultLanguage: Staus.CONFIG.defaultLanguage,
+  //   });
+
+  //   this.unregisterAll();
+
+  //   return html;
+  // };
+
+  /*
   private registerAll = () => {
     // register helpers
     Handlebars.registerHelper(ID.link, (options, _options) => {
@@ -96,19 +105,7 @@ export default abstract class Page {
       Handlebars.unregisterPartial(o)
     );
   };
-
-  // TODO: maybe move to utils and purify it
-  // if finds path, return file content, else return the content
-  private getContent = (): string => {
-    try {
-      return fs.readFileSync(
-        path.join(Staus.PATH.PAGES_DIR, `/${this.props.content}`),
-        { encoding: "utf-8" }
-      );
-    } catch (e) {
-      return this.props.content;
-    }
-  };
+  */
 }
 
 type PageProps = {
@@ -116,11 +113,11 @@ type PageProps = {
   description?: string;
   meta?: MetaPair[];
   bodyClass?: string;
-  content: string;
-  layout: Layout;
 };
 
 type MetaPair = {
   name: string;
   content: string;
 };
+
+export { Body, Head, Html };

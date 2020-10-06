@@ -4,6 +4,6 @@ import { intlData } from "./intl";
 Staus.build(intlData, {
   outDir: "./build",
   inDir: "./src",
-  minify: true,
+  minify: false,
   defaultLanguage: "en",
 });
