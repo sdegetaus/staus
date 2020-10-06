@@ -14,9 +14,15 @@ type Config = {
 export default abstract class Staus {
   public static CONFIG: Config;
   public static PATH: { [key: string]: string };
-  private static INTL_DATA: IntlData;
+  private static INTL_DATA: IntlData = null;
 
-  public static build = (intlData: IntlData, config: Config) => {
+  public static setIntlData = (data: IntlData) => {
+    if (Staus.INTL_DATA === null) {
+      Staus.INTL_DATA = data;
+    }
+  };
+
+  public static build = (config: Config) => {
     const timeStart = Date.now();
     console.log("Starting build...\n");
 
@@ -29,7 +35,6 @@ export default abstract class Staus {
       ASSETS_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}/assets`),
       PAGES_DIR: path.resolve(`./`, `${Staus.CONFIG.inDir}/pages`),
     };
-    Staus.INTL_DATA = intlData;
 
     const htmlMinifierOptions: Options = {
       collapseWhitespace: true,
@@ -69,7 +74,11 @@ export default abstract class Staus {
         const extension = path.extname(file);
         const filename = path.basename(file, extension);
 
-        Object.entries(intlData).forEach(([key, value]) => {
+        if (Staus.INTL_DATA === null) {
+          throw new Error("No intlData set");
+        }
+
+        Object.entries(Staus.INTL_DATA).forEach(([key, value]) => {
           const languageDir = path.join(
             Staus.PATH.OUTPUT_DIR,
             // for the default language, don't make a directory
@@ -144,5 +153,6 @@ export default abstract class Staus {
 }
 
 // exports
+export { Link } from "./components";
 export { default as Page } from "./page";
 export { IntlData, MessagePair } from "./types";
