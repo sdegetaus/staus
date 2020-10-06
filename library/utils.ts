@@ -1,8 +1,8 @@
-import * as fs from "fs";
-import * as sass from "node-sass";
-import * as path from "path";
+import fs from "fs";
+import sass from "node-sass";
+import path from "path";
 import ts from "typescript";
-import * as uglifyJs from "uglify-js";
+import uglifyJs from "uglify-js";
 
 /**
  * Remove all files and sub-directories in a directory. Adapted from @guybedford's code:

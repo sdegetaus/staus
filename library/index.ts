@@ -1,6 +1,6 @@
-import * as fs from "fs";
+import fs from "fs";
 import { minify as htmlMinifier, Options } from "html-minifier";
-import * as path from "path";
+import path from "path";
 import { IntlData } from "./types";
 import * as utils from "./utils";
 
