@@ -42,10 +42,10 @@ async function build() {
     const pageFiles = await fsPromise.readdir(
       path.join(PATH.INPUT_DIR, "/pages")
     );
-    for (const file of pageFiles) {
-      const extension = path.extname(file);
-      const filename = path.basename(file, extension);
-      for (const locale of CONFIG.locales) {
+    for (const locale of CONFIG.locales) {
+      for (const file of pageFiles) {
+        const extension = path.extname(file);
+        const filename = path.basename(file, extension);
         Intl.activeLocale = locale; // test
         const languageDir = path.join(
           PATH.OUTPUT_DIR,

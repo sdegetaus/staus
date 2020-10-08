@@ -4,16 +4,16 @@ export default class Intl extends React.Component<IntlProps> {
   public static defaultLocale: string;
   public static activeLocale: string;
   public static baseUrl: string;
-  private static messages: MessagePair = null;
+  private static intlData: LocaleData = null;
 
   // convert to high-order component:
   // https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775
-  public static connect = (messages: MessagePair) => {
-    Intl.messages = messages;
+  public static connect = (messages: LocaleData) => {
+    Intl.intlData = messages;
   };
 
   private resolveTranslation = () => {
-    const res = Intl.messages[this.props.id];
+    const res = Intl.intlData[Intl.activeLocale].messages[this.props.id];
     return res == null ? this.props.id : res;
   };
 
