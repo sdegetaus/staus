@@ -53,17 +53,17 @@ async function build() {
     // enqueue js
     // TODO!
 
-    Intl.setDefaultLocale(CONFIG.defaultLocale);
+    Intl.defaultLocale = CONFIG.defaultLocale;
 
     // build pages
     const pageFiles = await fsPromise.readdir(
       path.join(PATH.INPUT_DIR, "/pages")
     );
     for (const locale of CONFIG.locales) {
+      Intl.activeLocale = locale;
       for (const file of pageFiles) {
         const extension = path.extname(file);
         const filename = path.basename(file, extension);
-        Intl.setActiveLocale(locale);
         const languageDir = path.join(
           PATH.OUTPUT_DIR,
           // for the default language, don't make a directory

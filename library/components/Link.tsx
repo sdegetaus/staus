@@ -23,16 +23,14 @@ type LinkProps = {
   style?: React.CSSProperties;
   target?: string;
   children: JSX.Element | string;
-  [key: string]: any;
+  [attr: string]: any;
 };
 
 const localizeHref = (to: string) => {
-  const activeLocale = Intl.getActiveLocale();
-  const defaultLocale = Intl.getDefaultLocale();
   const noSlash = to.replace("/", ""); // normalize href
-  if (activeLocale === defaultLocale) {
+  if (Intl.activeLocale === Intl.defaultLocale) {
     return `/${noSlash}`;
   } else {
-    return `/${activeLocale}/${noSlash}`;
+    return `/${Intl.activeLocale}/${noSlash}`;
   }
 };

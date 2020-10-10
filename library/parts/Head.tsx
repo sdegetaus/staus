@@ -1,6 +1,9 @@
 import React from "react";
+import SEO from "../seo";
 
 export default ({ stylesheetName = null }: HeadProps) => {
+  const title = SEO.title;
+  const description = SEO.description;
   return (
     <head>
       <meta charSet="utf-8" />
@@ -9,20 +12,16 @@ export default ({ stylesheetName = null }: HeadProps) => {
         name="viewport"
         content="width=device-width,initial-scale=1,shrink-to-fit=no"
       />
+      {title != null && <title>{title}</title>}
+      {description != null && (
+        <meta name="description" content={description.toString()} />
+      )}
 
       {/* TODO:
-      
-      {{#if title}}
-    <title>{{title}}</title>
-  {{/if}}
-
-  {{#if description}}
-    <meta name="description" content="{{description}}" />
-  {{/if}}
-
-  {{#each meta}}
-    <meta name="{{this.name}}" content="{{this.content}}" />
-  {{/each}} */}
+        {{#each meta}}
+          <meta name="{{this.name}}" content="{{this.content}}" />
+        {{/each}}
+      */}
 
       <link rel="icon" href="/favicon.png" type="image/png" />
       {stylesheetName !== null && (

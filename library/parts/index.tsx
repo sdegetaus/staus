@@ -15,7 +15,7 @@ const Root = ({ locale, page, stylesheetName }: RootProps) => {
 type RootProps = {
   locale: string;
   page: any;
-  stylesheetName?: string;
+  stylesheetName: string;
 };
 
 export default Root;
