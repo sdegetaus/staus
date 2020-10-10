@@ -3,10 +3,10 @@ import path from "path";
 import fsPromise from "promise-fs";
 import ReactDOMServer from "react-dom/server";
 import { INPUT_DIR, OUTPUT_DIR } from "../consts";
-import Root from "../parts";
-import fsUtil from "../utils/fs-util";
-import configUtil from "../utils/config-util";
 import Intl from "../intl";
+import Root from "../parts";
+import configUtil from "../utils/config-util";
+import fsUtil from "../utils/fs-util";
 
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk
@@ -36,7 +36,7 @@ async function build() {
 
     // enqueue css & js
 
-    Intl.defaultLocale = CONFIG.defaultLocale; // test
+    Intl.setDefaultLocale(CONFIG.defaultLocale);
 
     // build pages
     const pageFiles = await fsPromise.readdir(
@@ -46,7 +46,7 @@ async function build() {
       for (const file of pageFiles) {
         const extension = path.extname(file);
         const filename = path.basename(file, extension);
-        Intl.activeLocale = locale; // test
+        Intl.setActiveLocale(locale);
         const languageDir = path.join(
           PATH.OUTPUT_DIR,
           // for the default language, don't make a directory

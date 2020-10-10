@@ -4,16 +4,9 @@ import React from "react";
 export default (props: LinkProps) => {
   const { to, title, style, target, children, ...attrs } = props;
 
-  console.log(Intl.activeLocale, Intl.defaultLocale, Intl.baseUrl);
-
-  const newHref =
-    Intl.activeLocale === Intl.defaultLocale
-      ? to
-      : `/${Intl.activeLocale}${to}`;
-
   return (
     <a
-      href={newHref}
+      href={localizeHref(to)}
       title={title != null ? title : undefined}
       style={style}
       target={target != null ? target : undefined}
@@ -31,4 +24,15 @@ type LinkProps = {
   target?: string;
   children: JSX.Element | string;
   [key: string]: any;
+};
+
+const localizeHref = (to: string) => {
+  const activeLocale = Intl.getActiveLocale();
+  const defaultLocale = Intl.getDefaultLocale();
+  const noSlash = to.replace("/", ""); // normalize href
+  if (activeLocale === defaultLocale) {
+    return `/${noSlash}`;
+  } else {
+    return `/${activeLocale}/${noSlash}`;
+  }
 };

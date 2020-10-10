@@ -4,7 +4,7 @@ import { localeData } from "../intl";
 import Layout from "../layout";
 
 export default (props: PageProps) => {
-  Intl.connect(localeData);
+  Intl.setLocaleData(localeData);
   return (
     <Layout>
       <h1>

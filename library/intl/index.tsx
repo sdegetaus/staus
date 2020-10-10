@@ -1,19 +1,26 @@
 import React from "react";
 
 export default class Intl extends React.Component<IntlProps> {
-  public static defaultLocale: string;
-  public static activeLocale: string;
-  public static baseUrl: string;
-  private static intlData: LocaleData = null;
+  private static _defaultLocale: string;
+  private static _activeLocale: string;
+  private static _localeData: LocaleData = null;
 
-  // convert to high-order component:
-  // https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775
-  public static connect = (messages: LocaleData) => {
-    Intl.intlData = messages;
+  public static getDefaultLocale = () => Intl._defaultLocale;
+  public static setDefaultLocale = (locale: string) => {
+    Intl._defaultLocale = locale;
+  };
+
+  public static getActiveLocale = () => Intl._activeLocale;
+  public static setActiveLocale = (locale: string) => {
+    Intl._activeLocale = locale;
+  };
+
+  public static setLocaleData = (messages: LocaleData) => {
+    Intl._localeData = messages;
   };
 
   private resolveTranslation = () => {
-    const res = Intl.intlData[Intl.activeLocale].messages[this.props.id];
+    const res = Intl._localeData[Intl._activeLocale].messages[this.props.id];
     return res == null ? this.props.id : res;
   };
 
