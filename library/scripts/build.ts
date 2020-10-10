@@ -51,6 +51,7 @@ async function build() {
     );
 
     // enqueue js
+    // TODO!
 
     Intl.setDefaultLocale(CONFIG.defaultLocale);
 

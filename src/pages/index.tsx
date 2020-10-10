@@ -1,19 +1,19 @@
-import { Intl } from "library";
+import { Intl, IntlMessage } from "library";
 import React from "react";
 import { localeData } from "../intl";
 import Layout from "../layout";
 
 export default (props: PageProps) => {
-  Intl.setLocaleData(localeData);
+  Intl.connect(localeData);
   return (
     <Layout>
       <h1>
-        <Intl id="home.title" />
+        <IntlMessage id="home.title" />
       </h1>
     </Layout>
   );
 };
 
-interface PageProps {
+type PageProps = {
   locale: string;
-}
+};

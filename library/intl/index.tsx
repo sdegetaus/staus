@@ -1,6 +1,7 @@
 import React from "react";
 
-export default class Intl extends React.Component<IntlProps> {
+// not super happy with these getters/setters....
+abstract class Intl {
   private static _defaultLocale: string;
   private static _activeLocale: string;
   private static _localeData: LocaleData = null;
@@ -15,31 +16,35 @@ export default class Intl extends React.Component<IntlProps> {
     Intl._activeLocale = locale;
   };
 
-  public static setLocaleData = (messages: LocaleData) => {
+  public static getActiveLocaleData = () =>
+    Intl._localeData[Intl._activeLocale];
+
+  public static connect = (messages: LocaleData) => {
     Intl._localeData = messages;
   };
-
-  private resolveTranslation = () => {
-    const res = Intl._localeData[Intl._activeLocale].messages[this.props.id];
-    return res == null ? this.props.id : res;
-  };
-
-  render() {
-    // separate into two different components?
-    return <>{this.resolveTranslation()}</>;
-  }
 }
 
-type IntlProps = {
+const IntlMessage = (props: IntlMessageProps) => {
+  const resolveTranslation = () => {
+    const res = Intl.getActiveLocaleData().messages[props.id];
+    return res == null ? props.id : res;
+  };
+  return <>{resolveTranslation()}</>;
+};
+
+type IntlMessageProps = {
   id: string;
 };
 
-export type LocaleData = {
+type LocaleData = {
   [locale: string]: {
     messages: MessagePair;
   };
 };
 
-export type MessagePair = {
+type MessagePair = {
   [key: string]: string;
 };
+
+export default Intl;
+export { IntlMessage, LocaleData, MessagePair };

@@ -1,14 +1,9 @@
 import React from "react";
 
-export default (props: Props) => {
-  return (
-    <body>
-      {props.children}
-      <script type="text/javascript" src="/main.js"></script>
-    </body>
-  );
+export default (props: BodyProps) => {
+  return <body>{props.children}</body>;
 };
 
-type Props = {
+type BodyProps = {
   children?: JSX.Element;
 };
