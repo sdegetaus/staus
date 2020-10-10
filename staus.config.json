@@ -1,5 +1,7 @@
 {
   "minify": false,
   "defaultLanguage": "en",
-  "locales": ["en", "es"]
+  "locales": ["en", "es"],
+  "enqueueStyles": ["./assets/styles/index.scss"],
+  "stylesheetName": "style"
 }

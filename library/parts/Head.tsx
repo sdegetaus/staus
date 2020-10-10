@@ -1,6 +1,6 @@
 import React from "react";
 
-export default (props: Props) => {
+export default ({ stylesheetName = null }: HeadProps) => {
   return (
     <head>
       <meta charSet="utf-8" />
@@ -25,9 +25,17 @@ export default (props: Props) => {
   {{/each}} */}
 
       <link rel="icon" href="/favicon.png" type="image/png" />
-      <link rel="stylesheet" type="text/css" href="/style.css" />
+      {stylesheetName !== null && (
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href={`/${stylesheetName}.css`}
+        />
+      )}
     </head>
   );
 };
 
-type Props = {};
+type HeadProps = {
+  stylesheetName?: string;
+};

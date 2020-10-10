@@ -5,6 +5,7 @@ import ReactDOMServer from "react-dom/server";
 import { INPUT_DIR, OUTPUT_DIR } from "../consts";
 import Intl from "../intl";
 import Root from "../parts";
+import assetsUtil from "../utils/assets-util";
 import configUtil from "../utils/config-util";
 import fsUtil from "../utils/fs-util";
 
@@ -34,7 +35,22 @@ async function build() {
       fsUtil.removeDirContent(PATH.OUTPUT_DIR);
     }
 
-    // enqueue css & js
+    // enqueue stylesheets
+    fs.writeFileSync(
+      path.join(PATH.OUTPUT_DIR, `/${CONFIG.stylesheetName}.css`),
+      CONFIG.enqueueStyles.reduce(
+        (prev, curr) =>
+          prev.concat(
+            assetsUtil
+              .compileCssFile(path.join(PATH.INPUT_DIR, curr), CONFIG.minify)
+              .toString()
+          ),
+        ""
+      ),
+      { encoding: "utf-8" }
+    );
+
+    // enqueue js
 
     Intl.setDefaultLocale(CONFIG.defaultLocale);
 
@@ -56,10 +72,12 @@ async function build() {
         if (extension === ".tsx") {
           const pagePath = path.join(PATH.INPUT_DIR, `/pages/${filename}`);
           const page = await import(pagePath);
-
+          const stylesheetName = CONFIG.stylesheetName;
           fs.writeFileSync(
             path.join(languageDir, `/${filename.toLowerCase()}.html`), // todo: translate slug!
-            ReactDOMServer.renderToStaticMarkup(Root({ locale, page }))
+            ReactDOMServer.renderToStaticMarkup(
+              Root({ locale, page, stylesheetName })
+            )
           );
         }
       }

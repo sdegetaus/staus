@@ -6,7 +6,7 @@ import path from "path";
  * https://gist.github.com/liangzan/807712/8fb16263cb39e8472d17aea760b6b1492c465af2#gistcomment-337828
  * @param dirPath
  */
-export const removeDirContent = (dirPath: string) => {
+const removeDirContent = (dirPath: string) => {
   try {
     const files = fs.readdirSync(dirPath);
     if (files.length > 0) {
@@ -28,7 +28,7 @@ export const removeDirContent = (dirPath: string) => {
  * Synchronously create directory if it doesn't exist
  * @param dirPath
  */
-export const ensureDirSync = (dirPath: string) => {
+const ensureDirSync = (dirPath: string) => {
   try {
     fs.mkdirSync(dirPath);
   } catch (e) {

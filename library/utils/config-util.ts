@@ -9,6 +9,8 @@ const getConfig = async (): Promise<StausConfig> => {
     minify: true,
     defaultLocale: "en",
     locales: ["en"],
+    enqueueStyles: [],
+    stylesheetName: "style",
     ...((await import(
       path.join(fsUtil.getRootPath(), `staus.config.json`)
     )) as StausConfig),
@@ -19,6 +21,8 @@ interface StausConfig {
   minify: boolean;
   defaultLocale: string;
   locales: string[];
+  enqueueStyles: string[];
+  stylesheetName: string;
 }
 
 export default { getConfig };
