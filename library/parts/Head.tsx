@@ -4,6 +4,7 @@ import SEO from "../seo";
 export default ({ stylesheetName = null }: HeadProps) => {
   const title = SEO.title;
   const description = SEO.description;
+  const meta = SEO.meta;
   return (
     <head>
       <meta charSet="utf-8" />
@@ -16,13 +17,10 @@ export default ({ stylesheetName = null }: HeadProps) => {
       {description != null && (
         <meta name="description" content={description.toString()} />
       )}
-
-      {/* TODO:
-        {{#each meta}}
-          <meta name="{{this.name}}" content="{{this.content}}" />
-        {{/each}}
-      */}
-
+      {meta != null &&
+        meta.map((o) => (
+          <meta key={o.name} name={o.name} content={o.content} />
+        ))}
       <link rel="icon" href="/favicon.png" type="image/png" />
       {stylesheetName !== null && (
         <link
