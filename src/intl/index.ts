@@ -1,4 +1,4 @@
-import { LocaleData } from "library";
+import { LocaleData } from "library/types";
 import EnglishMessages from "./en_US.json";
 import SpanishMessages from "./es_MX.json";
 

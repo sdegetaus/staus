@@ -4,6 +4,7 @@ abstract class SEO {
   public static meta: MetaPair[];
 
   public static setMeta = (meta: MetaPair[]) => {
+    // todo: improve
     SEO.meta = meta;
   };
 

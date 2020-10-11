@@ -1,4 +1,5 @@
 import { IntlMessage, SEO } from "library";
+import { PageProps } from "library/types";
 import React from "react";
 import Layout from "../layout";
 
@@ -10,10 +11,6 @@ const Index = (props: PageProps): JSX.Element => {
       </h1>
     </Layout>
   );
-};
-
-type PageProps = {
-  locale: string;
 };
 
 export default (props: PageProps) =>

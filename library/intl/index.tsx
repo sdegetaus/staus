@@ -1,4 +1,5 @@
 import React from "react";
+import { LocaleData, MessagePair } from "../types";
 
 // not super happy with these getters/setters....
 abstract class Intl {
@@ -26,15 +27,5 @@ type IntlMessageProps = {
   id: string;
 };
 
-type LocaleData = {
-  [locale: string]: {
-    messages: MessagePair;
-  };
-};
-
-type MessagePair = {
-  [key: string]: string;
-};
-
 export default Intl;
-export { IntlMessage, LocaleData, MessagePair };
+export { IntlMessage };
