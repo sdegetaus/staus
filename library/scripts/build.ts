@@ -8,6 +8,8 @@ import Root from "../parts";
 import assetsUtil from "../utils/assets-util";
 import configUtil from "../utils/config-util";
 import fsUtil from "../utils/fs-util";
+import { minify as htmlMinifier } from "html-minifier";
+import { html_beautify } from "js-beautify";
 
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk
@@ -74,11 +76,15 @@ async function build() {
           const pagePath = path.join(PATH.INPUT_DIR, `/pages/${filename}`);
           const page = await import(pagePath);
           const stylesheetName = CONFIG.stylesheetName;
+          const html = ReactDOMServer.renderToStaticMarkup(
+            Root({ locale, page, stylesheetName })
+          );
+          const processedHtml = CONFIG.minify
+            ? htmlMinifier(html)
+            : html_beautify(html);
           fs.writeFileSync(
             path.join(languageDir, `/${filename.toLowerCase()}.html`), // todo: translate slug!
-            ReactDOMServer.renderToStaticMarkup(
-              Root({ locale, page, stylesheetName })
-            )
+            processedHtml
           );
         }
       }
