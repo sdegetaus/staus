@@ -14,9 +14,7 @@ export default ({ stylesName = null, headScriptsName = null }: HeadProps) => {
         content="width=device-width,initial-scale=1,shrink-to-fit=no"
       />
       {title != null && <title>{title}</title>}
-      {description != null && (
-        <meta name="description" content={description.toString()} />
-      )}
+      {description != null && <meta name="description" content={description} />}
       {meta != null &&
         meta.map((o) => (
           <meta key={o.name} name={o.name} content={o.content} />

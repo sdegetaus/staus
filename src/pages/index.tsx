@@ -1,4 +1,4 @@
-import { IntlMessage, SEO } from "library";
+import { IntlMessage, SEO, intlMessage } from "library";
 import { PageProps } from "library/types";
 import React from "react";
 import Layout from "../layout";
@@ -15,6 +15,6 @@ const Index = (props: PageProps): JSX.Element => {
 
 export default (props: PageProps) =>
   SEO.connect(<Index {...props} />, {
-    title: <IntlMessage id="home.title" />,
+    title: intlMessage("home.title"),
     description: "Description!",
   });

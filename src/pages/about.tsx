@@ -1,9 +1,9 @@
-import { IntlMessage } from "library";
+import { IntlMessage, SEO, intlMessage } from "library";
 import { PageProps } from "library/types";
 import React from "react";
 import Layout from "../layout";
 
-export default (props: PageProps) => {
+const About = (props: PageProps) => {
   return (
     <Layout>
       <h1>
@@ -12,3 +12,10 @@ export default (props: PageProps) => {
     </Layout>
   );
 };
+
+export default (props: PageProps) =>
+  SEO.connect(<About {...props} />, {
+    title: intlMessage("about.title"),
+    description: "Description!",
+    slug: intlMessage("about.title"),
+  });

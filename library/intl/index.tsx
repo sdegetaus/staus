@@ -12,12 +12,13 @@ abstract class Intl {
   };
 }
 
+const intlMessage = (id: string) => {
+  const res = Intl.localeData[Intl.activeLocale].messages[id];
+  return res == null ? id : res;
+};
+
 const IntlMessage = (props: IntlMessageProps) => {
-  const resolveTranslation = () => {
-    const res = Intl.localeData[Intl.activeLocale].messages[props.id];
-    return res == null ? props.id : res;
-  };
-  return <>{resolveTranslation()}</>;
+  return <>{intlMessage(props.id)}</>;
 };
 
 type IntlMessageProps = {
@@ -25,4 +26,4 @@ type IntlMessageProps = {
 };
 
 export default Intl;
-export { IntlMessage };
+export { IntlMessage, intlMessage };

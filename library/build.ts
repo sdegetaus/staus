@@ -6,6 +6,7 @@ import fsPromise from "promise-fs";
 import ReactDOMServer from "react-dom/server";
 import { INPUT_DIR, OUTPUT_DIR } from "./consts";
 import Intl from "./intl";
+import SEO from "./seo";
 import Root from "./parts";
 import assetsUtil from "./utils/assets-util";
 import { BuildConfig } from "./utils/config-util";
@@ -145,10 +146,12 @@ export default async function build(config: BuildConfig) {
           const processedHtml = config.minify
             ? htmlMinifier(html)
             : html_beautify(html);
+          const slug = SEO.slug == null ? filename.toLowerCase() : SEO.slug;
           fs.writeFileSync(
-            path.join(languageDir, `/${filename.toLowerCase()}.html`), // todo: translate slug!
+            path.join(languageDir, `/${slug}.html`),
             processedHtml
           );
+          SEO.clearPage();
         }
       }
     }
