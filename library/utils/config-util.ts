@@ -4,7 +4,7 @@ import fsUtil from "../utils/fs-util";
 /**
  * Get the project's configuration.
  */
-const getConfig = async (): Promise<StausConfig> => {
+const getConfig = async (): Promise<BuildConfig> => {
   return {
     minify: true,
     defaultLocale: "en",
@@ -15,20 +15,20 @@ const getConfig = async (): Promise<StausConfig> => {
     },
     // change these defaults...
     headScripts: {
-      name: "_",
+      name: "head",
       files: [],
     },
     bodyScripts: {
-      name: "__",
+      name: "body",
       files: [],
     },
     ...((await import(
       path.join(fsUtil.getRootPath(), `staus.config.json`)
-    )) as StausConfig),
+    )) as BuildConfig),
   };
 };
 
-interface StausConfig {
+export interface BuildConfig {
   minify: boolean;
   defaultLocale: string;
   locales: string[];

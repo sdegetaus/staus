@@ -7,8 +7,8 @@
     "url": "https://taus.mx"
   },
   "scripts": {
-    "build": "ts-node ./scripts/build.ts",
-    "watch": "ts-node ./scripts/watch.ts"
+    "build": "ts-node ./cli-scripts/build.ts",
+    "watch": "ts-node ./cli-scripts/watch.ts"
   },
   "devDependencies": {
     "@types/html-minifier": "^4.0.0",

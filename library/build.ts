@@ -4,23 +4,22 @@ import { html_beautify } from "js-beautify";
 import path from "path";
 import fsPromise from "promise-fs";
 import ReactDOMServer from "react-dom/server";
-import { INPUT_DIR, OUTPUT_DIR } from "../consts";
-import Intl from "../intl";
-import Root from "../parts";
-import assetsUtil from "../utils/assets-util";
-import configUtil from "../utils/config-util";
-import fsUtil from "../utils/fs-util";
+import { INPUT_DIR, OUTPUT_DIR } from "./consts";
+import Intl from "./intl";
+import Root from "./parts";
+import assetsUtil from "./utils/assets-util";
+import { BuildConfig } from "./utils/config-util";
+import fsUtil from "./utils/fs-util";
 
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk
 
-async function build() {
+export default async function build(config: BuildConfig) {
   const timeStart = Date.now();
   console.log("Starting build...\n");
 
   try {
     const ROOT = fsUtil.getRootPath();
-    const CONFIG = await configUtil.getConfig();
     const PATH = {
       OUTPUT_DIR: path.resolve(ROOT, `${OUTPUT_DIR}`),
       INPUT_DIR: path.resolve(ROOT, `${INPUT_DIR}`),
@@ -42,7 +41,7 @@ async function build() {
       fsUtil.removeDirContent(PATH.OUTPUT_DIR);
     }
 
-    Intl.defaultLocale = CONFIG.defaultLocale;
+    Intl.defaultLocale = config.defaultLocale;
 
     /**
       Steps:
@@ -55,12 +54,12 @@ async function build() {
     //#region [1. Transpile & write styles]
     // ------------------------------------
     const t_Sass = Date.now();
-    if (CONFIG.styles.files.length > 0) {
-      const mergedCss = CONFIG.styles.files.reduce((prev, curr) => {
+    if (config.styles.files.length > 0) {
+      const mergedCss = config.styles.files.reduce((prev, curr) => {
         const src = path.join(PATH.INPUT_DIR, curr);
         if (fs.existsSync(src)) {
           return prev.concat(
-            assetsUtil.compileSassFile(src, CONFIG.minify).toString()
+            assetsUtil.compileSassFile(src, config.minify).toString()
           );
         } else {
           return prev;
@@ -68,7 +67,7 @@ async function build() {
       }, "");
       if (mergedCss) {
         fs.writeFileSync(
-          path.join(PATH.OUTPUT_DIR, `/${CONFIG.styles.name}.css`),
+          path.join(PATH.OUTPUT_DIR, `/${config.styles.name}.css`),
           mergedCss
         );
         FLAGS.enqueueStyles = true;
@@ -80,13 +79,13 @@ async function build() {
     //#region [2. Transpile & write scripts]
     // ------------------------------------
     const t_Ts = Date.now();
-    [CONFIG.headScripts, CONFIG.bodyScripts].forEach((script) => {
+    [config.headScripts, config.bodyScripts].forEach((script) => {
       if (script.files.length > 0) {
         const mergedJs = script.files.reduce((prev, curr) => {
           const src = path.join(PATH.INPUT_DIR, curr);
           if (fs.existsSync(src)) {
             return prev.concat(
-              assetsUtil.transpileTsFile(src, CONFIG.minify).toString()
+              assetsUtil.transpileTsFile(src, config.minify).toString()
             );
           } else {
             return prev;
@@ -98,10 +97,10 @@ async function build() {
             mergedJs
           );
           switch (script) {
-            case CONFIG.headScripts:
+            case config.headScripts:
               FLAGS.enqueueHeadScripts = true;
               break;
-            case CONFIG.bodyScripts:
+            case config.bodyScripts:
               FLAGS.enqueueBodyScripts = true;
               break;
             default:
@@ -119,7 +118,7 @@ async function build() {
     const pageFiles = await fsPromise.readdir(
       path.join(PATH.INPUT_DIR, "/pages")
     );
-    for (const locale of CONFIG.locales) {
+    for (const locale of config.locales) {
       Intl.activeLocale = locale;
       for (const file of pageFiles) {
         const extension = path.extname(file);
@@ -127,23 +126,23 @@ async function build() {
         const languageDir = path.join(
           PATH.OUTPUT_DIR,
           // for the default language, don't make a directory
-          `/${locale !== CONFIG.defaultLocale ? locale : ""}`
+          `/${locale !== config.defaultLocale ? locale : ""}`
         );
         fsUtil.ensureDirSync(languageDir);
         if (extension === ".tsx") {
           const pagePath = path.join(PATH.INPUT_DIR, `/pages/${filename}`);
           const page = await import(pagePath);
-          const stylesName = FLAGS.enqueueStyles ? CONFIG.styles.name : null;
+          const stylesName = FLAGS.enqueueStyles ? config.styles.name : null;
           const headScriptsName = FLAGS.enqueueHeadScripts
-            ? CONFIG.headScripts.name
+            ? config.headScripts.name
             : null;
           const bodyScriptsName = FLAGS.enqueueBodyScripts
-            ? CONFIG.bodyScripts.name
+            ? config.bodyScripts.name
             : null;
           const html = ReactDOMServer.renderToStaticMarkup(
             Root({ locale, page, stylesName, headScriptsName, bodyScriptsName })
           );
-          const processedHtml = CONFIG.minify
+          const processedHtml = config.minify
             ? htmlMinifier(html)
             : html_beautify(html);
           fs.writeFileSync(
@@ -170,7 +169,3 @@ async function build() {
     console.log(`Build took: ${Date.now() - timeStart}ms\n`);
   }
 }
-
-build();
-console.log("this gets called?");
-export default build;
