@@ -86,19 +86,8 @@ async function build() {
 
     // copy all from the static directory
     if (fs.existsSync(PATH.STATIC_DIR)) {
-      fs.readdirSync(PATH.STATIC_DIR).forEach((file) => {
-        const filename = path.basename(file, path.extname(file)).toLowerCase();
-        if (filename === "favicon") {
-          // todo: post-process favicon
-        }
-        fs.copyFileSync(
-          path.join(PATH.STATIC_DIR, file),
-          path.join(PATH.OUTPUT_DIR, file)
-        );
-      });
+      fsUtil.copyAll(PATH.STATIC_DIR, PATH.OUTPUT_DIR);
     }
-
-    // fonts?
 
     console.log(`\nBuild Successful!`);
   } catch (e) {
@@ -111,32 +100,3 @@ async function build() {
 
 build();
 export default build;
-
-// TODO: add to build pipeline
-
-// TODO: check if paths can be simplified! (and customizable names!)
-// handle non-existing files as well!
-// utils.compileCssFile(
-//   path.join(Staus.PATH.ASSETS_DIR, `/styles/index.scss`),
-//   path.join(Staus.PATH.OUTPUT_DIR, `/style.css`),
-//   config.minify
-// );
-
-// utils.transpileTsFile(
-//   path.join(Staus.PATH.ASSETS_DIR, `/scripts/index.ts`),
-//   path.join(Staus.PATH.OUTPUT_DIR, `/main.js`),
-//   config.minify
-// );
-
-// TODO: check if paths can be simplified!
-// const inputFontsDir = path.join(Staus.PATH.ASSETS_DIR, "/fonts");
-// const outputFontsDir = path.join(Staus.PATH.OUTPUT_DIR, "/fonts");
-// if (fs.existsSync(inputFontsDir)) {
-//   utils.ensureDirSync(outputFontsDir);
-//   fs.readdirSync(inputFontsDir).forEach((file) =>
-//     fs.copyFileSync(
-//       path.join(inputFontsDir, file),
-//       path.join(outputFontsDir, file)
-//     )
-//   );
-// }
