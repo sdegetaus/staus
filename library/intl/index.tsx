@@ -1,5 +1,5 @@
 import React from "react";
-import { LocaleData, MessagePair } from "../types";
+import { LocaleData } from "../types";
 
 // not super happy with these getters/setters....
 abstract class Intl {

@@ -4,10 +4,8 @@ export interface PageProps {
 
 export type LocaleData = {
   [locale: string]: {
-    messages: MessagePair;
+    messages: {
+      [key: string]: string;
+    };
   };
-};
-
-export type MessagePair = {
-  [key: string]: string;
 };

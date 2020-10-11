@@ -42,7 +42,19 @@ async function build() {
       fsUtil.removeDirContent(PATH.OUTPUT_DIR);
     }
 
-    // transpile & write styles
+    Intl.defaultLocale = CONFIG.defaultLocale;
+
+    /**
+      Steps:
+        1. Transpile & write styles
+        2. Transpile & write scripts
+        3. Build pages
+        4. Copy the static directory
+    */
+
+    //#region [1. Transpile & write styles]
+    // ------------------------------------
+    const t_Sass = Date.now();
     if (CONFIG.styles.files.length > 0) {
       const mergedCss = CONFIG.styles.files.reduce((prev, curr) => {
         const src = path.join(PATH.INPUT_DIR, curr);
@@ -62,8 +74,12 @@ async function build() {
         FLAGS.enqueueStyles = true;
       }
     }
+    console.log(`Compiling Sass took: ${Date.now() - t_Sass}ms`);
+    //#endregion
 
-    // transpile & write javascript (head & body)
+    //#region [2. Transpile & write scripts]
+    // ------------------------------------
+    const t_Ts = Date.now();
     [CONFIG.headScripts, CONFIG.bodyScripts].forEach((script) => {
       if (script.files.length > 0) {
         const mergedJs = script.files.reduce((prev, curr) => {
@@ -94,10 +110,12 @@ async function build() {
         }
       }
     });
+    console.log(`Compiling TypeScript took: ${Date.now() - t_Ts}ms`);
+    //#endregion
 
-    Intl.defaultLocale = CONFIG.defaultLocale;
-
-    // build pages
+    //#region [3. Build pages]
+    // ------------------------------------
+    const t_Pages = Date.now();
     const pageFiles = await fsPromise.readdir(
       path.join(PATH.INPUT_DIR, "/pages")
     );
@@ -135,11 +153,14 @@ async function build() {
         }
       }
     }
+    console.log(`Building pages took: ${Date.now() - t_Pages}ms`);
+    //#endregion
 
-    // copy all from the static directory
+    //#region [4. Copy the static directory]
     if (fs.existsSync(PATH.STATIC_DIR)) {
       fsUtil.copyAll(PATH.STATIC_DIR, PATH.OUTPUT_DIR);
     }
+    //#endregion
 
     console.log(`\nBuild Successful!`);
   } catch (e) {
@@ -151,4 +172,5 @@ async function build() {
 }
 
 build();
+console.log("this gets called?");
 export default build;
