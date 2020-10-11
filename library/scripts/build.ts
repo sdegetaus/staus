@@ -1,4 +1,6 @@
 import fs from "fs";
+import { minify as htmlMinifier } from "html-minifier";
+import { html_beautify } from "js-beautify";
 import path from "path";
 import fsPromise from "promise-fs";
 import ReactDOMServer from "react-dom/server";
@@ -8,8 +10,6 @@ import Root from "../parts";
 import assetsUtil from "../utils/assets-util";
 import configUtil from "../utils/config-util";
 import fsUtil from "../utils/fs-util";
-import { minify as htmlMinifier } from "html-minifier";
-import { html_beautify } from "js-beautify";
 
 // todo: use this eventually (colored cli)
 // https://www.npmjs.com/package/chalk
@@ -26,6 +26,11 @@ async function build() {
       INPUT_DIR: path.resolve(ROOT, `${INPUT_DIR}`),
       STATIC_DIR: path.resolve(ROOT, `./static`),
     };
+    const FLAGS = {
+      enqueueStyles: false,
+      enqueueHeadScripts: false,
+      enqueueBodyScripts: false,
+    };
 
     // create or clear the build folder
     if (!fs.existsSync(PATH.OUTPUT_DIR)) {
@@ -37,23 +42,58 @@ async function build() {
       fsUtil.removeDirContent(PATH.OUTPUT_DIR);
     }
 
-    // enqueue stylesheets
-    fs.writeFileSync(
-      path.join(PATH.OUTPUT_DIR, `/${CONFIG.stylesheetName}.css`),
-      CONFIG.enqueueStyles.reduce(
-        (prev, curr) =>
-          prev.concat(
-            assetsUtil
-              .compileCssFile(path.join(PATH.INPUT_DIR, curr), CONFIG.minify)
-              .toString()
-          ),
-        ""
-      ),
-      { encoding: "utf-8" }
-    );
+    // transpile & write styles
+    if (CONFIG.styles.files.length > 0) {
+      const mergedCss = CONFIG.styles.files.reduce((prev, curr) => {
+        const src = path.join(PATH.INPUT_DIR, curr);
+        if (fs.existsSync(src)) {
+          return prev.concat(
+            assetsUtil.compileSassFile(src, CONFIG.minify).toString()
+          );
+        } else {
+          return prev;
+        }
+      }, "");
+      if (mergedCss) {
+        fs.writeFileSync(
+          path.join(PATH.OUTPUT_DIR, `/${CONFIG.styles.name}.css`),
+          mergedCss
+        );
+        FLAGS.enqueueStyles = true;
+      }
+    }
 
-    // enqueue js
-    // TODO!
+    // transpile & write javascript (head & body)
+    [CONFIG.headScripts, CONFIG.bodyScripts].forEach((script) => {
+      if (script.files.length > 0) {
+        const mergedJs = script.files.reduce((prev, curr) => {
+          const src = path.join(PATH.INPUT_DIR, curr);
+          if (fs.existsSync(src)) {
+            return prev.concat(
+              assetsUtil.transpileTsFile(src, CONFIG.minify).toString()
+            );
+          } else {
+            return prev;
+          }
+        }, "");
+        if (mergedJs) {
+          fs.writeFileSync(
+            path.join(PATH.OUTPUT_DIR, `/${script.name}.js`),
+            mergedJs
+          );
+          switch (script) {
+            case CONFIG.headScripts:
+              FLAGS.enqueueHeadScripts = true;
+              break;
+            case CONFIG.bodyScripts:
+              FLAGS.enqueueBodyScripts = true;
+              break;
+            default:
+              throw new Error(`Invalid script: "${JSON.stringify(script)}"`);
+          }
+        }
+      }
+    });
 
     Intl.defaultLocale = CONFIG.defaultLocale;
 
@@ -75,9 +115,15 @@ async function build() {
         if (extension === ".tsx") {
           const pagePath = path.join(PATH.INPUT_DIR, `/pages/${filename}`);
           const page = await import(pagePath);
-          const stylesheetName = CONFIG.stylesheetName;
+          const stylesName = FLAGS.enqueueStyles ? CONFIG.styles.name : null;
+          const headScriptsName = FLAGS.enqueueHeadScripts
+            ? CONFIG.headScripts.name
+            : null;
+          const bodyScriptsName = FLAGS.enqueueBodyScripts
+            ? CONFIG.bodyScripts.name
+            : null;
           const html = ReactDOMServer.renderToStaticMarkup(
-            Root({ locale, page, stylesheetName })
+            Root({ locale, page, stylesName, headScriptsName, bodyScriptsName })
           );
           const processedHtml = CONFIG.minify
             ? htmlMinifier(html)

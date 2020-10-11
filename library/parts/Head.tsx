@@ -1,7 +1,7 @@
 import React from "react";
 import SEO from "../seo";
 
-export default ({ stylesheetName = null }: HeadProps) => {
+export default ({ stylesName = null, headScriptsName = null }: HeadProps) => {
   const title = SEO.title;
   const description = SEO.description;
   const meta = SEO.meta;
@@ -22,17 +22,17 @@ export default ({ stylesheetName = null }: HeadProps) => {
           <meta key={o.name} name={o.name} content={o.content} />
         ))}
       <link rel="icon" href="/favicon.png" type="image/png" />
-      {stylesheetName !== null && (
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href={`/${stylesheetName}.css`}
-        />
+      {stylesName !== null && (
+        <link rel="stylesheet" type="text/css" href={`/${stylesName}.css`} />
+      )}
+      {headScriptsName !== null && (
+        <script type="text/javascript" src={`/${headScriptsName}.js`}></script>
       )}
     </head>
   );
 };
 
 type HeadProps = {
-  stylesheetName?: string;
+  stylesName?: string;
+  headScriptsName?: string;
 };

@@ -2,6 +2,8 @@
   "minify": false,
   "defaultLanguage": "en",
   "locales": ["en", "es"],
-  "enqueueStyles": ["./assets/styles/index.scss"],
-  "stylesheetName": "style"
+  "styles": {
+    "name": "style",
+    "files": ["./assets/styles/index.scss"]
+  }
 }
