@@ -4,10 +4,10 @@ import { html_beautify } from "js-beautify";
 import path from "path";
 import fsPromise from "promise-fs";
 import ReactDOMServer from "react-dom/server";
-import { INPUT_DIR, OUTPUT_DIR } from "./consts";
+import { INPUT_DIR, OUTPUT_DIR, STATIC_DIR } from "./consts";
 import Intl from "./intl";
-import SEO from "./seo";
 import Root from "./parts";
+import SEO from "./seo";
 import assetsUtil from "./utils/assets-util";
 import { BuildConfig } from "./utils/config-util";
 import fsUtil from "./utils/fs-util";
@@ -24,7 +24,7 @@ export default async function build(config: BuildConfig) {
     const PATH = {
       OUTPUT_DIR: path.resolve(ROOT, `${OUTPUT_DIR}`),
       INPUT_DIR: path.resolve(ROOT, `${INPUT_DIR}`),
-      STATIC_DIR: path.resolve(ROOT, `./static`),
+      STATIC_DIR: path.resolve(ROOT, `${STATIC_DIR}`),
     };
     const FLAGS = {
       enqueueStyles: false,
