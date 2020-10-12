@@ -1,7 +1,6 @@
 {
   "minify": false,
-  "defaultLanguage": "en",
-  "locales": ["en", "es"],
+  "intl": "./intl/index.ts",
   "styles": {
     "name": "style",
     "files": ["./assets/styles/index.scss"]

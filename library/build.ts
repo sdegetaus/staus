@@ -4,7 +4,7 @@ import { html_beautify } from "js-beautify";
 import path from "path";
 import fsPromise from "promise-fs";
 import ReactDOMServer from "react-dom/server";
-import { SEO } from "types";
+import { LocaleData, SEO } from "types";
 import { INPUT_DIR, OUTPUT_DIR, STATIC_DIR } from "./consts";
 import Intl from "./intl";
 import Root from "./parts";
@@ -34,12 +34,10 @@ export default async function build(config: BuildConfig) {
 
     clearOutputDirectory(PATH.OUTPUT_DIR);
 
-    // TODO: do differently... (init user-script?)
-    Intl.defaultLocale = config.defaultLocale;
-    const _intl = await import(
-      path.resolve(ROOT, INPUT_DIR, "./intl/index.ts")
-    );
-    Intl.localeData = _intl.localeData;
+    // TODO: handle config.intl being null!
+    const intl = await import(path.resolve(ROOT, INPUT_DIR, config.intl));
+    Intl.defaultLocale = (intl?.defaultLocale ?? null) as string;
+    Intl.localeData = (intl?.localeData ?? null) as LocaleData; // TODO: null will crash
 
     /**
       Steps:
@@ -121,14 +119,14 @@ export default async function build(config: BuildConfig) {
       path.join(PATH.INPUT_DIR, "/pages")
     );
     if (pageFiles.length > 0) {
-      for (const locale of config.locales) {
+      for (const locale of Object.keys(Intl.localeData)) {
         Intl.activeLocale = locale;
         for (const pageFile of pageFiles) {
           const extension = path.extname(pageFile);
           const filename = path.basename(pageFile, extension);
           const languageDir = path.join(
             PATH.OUTPUT_DIR,
-            `/${locale !== config.defaultLocale ? locale : ""}` // no dir for the default language
+            `/${locale !== Intl.defaultLocale ? locale : ""}` // no dir for the default language
           );
           fsUtil.ensureDirSync(languageDir);
           if (extension === ".tsx") {

@@ -7,13 +7,11 @@ import fsUtil from "../utils/fs-util";
 const getConfig = async (): Promise<BuildConfig> => {
   return {
     minify: true,
-    defaultLocale: "en",
-    locales: ["en"],
+    intl: null,
     styles: {
       name: "style",
       files: [],
     },
-    // change these defaults...
     headScripts: {
       name: "head",
       files: [],
@@ -30,8 +28,7 @@ const getConfig = async (): Promise<BuildConfig> => {
 
 export interface BuildConfig {
   minify: boolean;
-  defaultLocale: string;
-  locales: string[];
+  intl: string;
   styles: {
     name: string;
     files: string[];
