@@ -4,10 +4,10 @@ import { html_beautify } from "js-beautify";
 import path from "path";
 import fsPromise from "promise-fs";
 import ReactDOMServer from "react-dom/server";
-import { INPUT_DIR, OUTPUT_DIR } from "./consts";
+import { INPUT_DIR, OUTPUT_DIR, STATIC_DIR } from "./consts";
 import Intl from "./intl";
-import SEO from "./seo";
 import Root from "./parts";
+import SEO from "./seo";
 import assetsUtil from "./utils/assets-util";
 import { BuildConfig } from "./utils/config-util";
 import fsUtil from "./utils/fs-util";
@@ -22,9 +22,9 @@ export default async function build(config: BuildConfig) {
   try {
     const ROOT = fsUtil.getRootPath();
     const PATH = {
-      OUTPUT_DIR: path.resolve(ROOT, `${OUTPUT_DIR}`),
-      INPUT_DIR: path.resolve(ROOT, `${INPUT_DIR}`),
-      STATIC_DIR: path.resolve(ROOT, `./static`),
+      OUTPUT_DIR: path.resolve(ROOT, OUTPUT_DIR),
+      INPUT_DIR: path.resolve(ROOT, INPUT_DIR),
+      STATIC_DIR: path.resolve(ROOT, STATIC_DIR),
     };
     const FLAGS = {
       enqueueStyles: false,
@@ -32,15 +32,7 @@ export default async function build(config: BuildConfig) {
       enqueueBodyScripts: false,
     };
 
-    // create or clear the build folder
-    if (!fs.existsSync(PATH.OUTPUT_DIR)) {
-      console.log(
-        `Out directory not found! Creating it now: "${PATH.OUTPUT_DIR}"`
-      );
-      fs.mkdirSync(PATH.OUTPUT_DIR);
-    } else {
-      fsUtil.removeDirContent(PATH.OUTPUT_DIR);
-    }
+    clearOutputDirectory(PATH.OUTPUT_DIR);
 
     Intl.defaultLocale = config.defaultLocale;
 
@@ -180,3 +172,12 @@ export default async function build(config: BuildConfig) {
     console.log(`Build took: ${Date.now() - timeStart}ms\n`);
   }
 }
+
+export const clearOutputDirectory = (outputDir: string) => {
+  if (!fs.existsSync(outputDir)) {
+    console.log(`Out directory not found! Creating it now: "${outputDir}"`);
+    fs.mkdirSync(outputDir);
+  } else {
+    fsUtil.removeDirContent(outputDir);
+  }
+};

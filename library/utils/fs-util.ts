@@ -71,7 +71,7 @@ const copyAll = (srcDir: string, destDir: string) => {
  */
 const getRootPath = () => {
   const fullPath = path.dirname(require.main.filename);
-  const regexResp = /^(.*?)library/.exec(fullPath);
+  const regexResp = /^(.*?)library/.exec(fullPath); // should be changed to node_modules
   return regexResp ? regexResp[1] : fullPath;
 };
 
