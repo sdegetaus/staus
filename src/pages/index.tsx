@@ -9,6 +9,7 @@ const Index = (props: PageProps): JSX.Element => {
       <h1>
         <IntlMessage id="home.title" />
       </h1>
+      <pre>{JSON.stringify(props, null, 4)}</pre>
     </Layout>
   );
 };

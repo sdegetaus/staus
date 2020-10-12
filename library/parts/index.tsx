@@ -5,6 +5,7 @@ import Html from "./Html";
 
 const Root = ({
   locale,
+  id,
   page,
   stylesName,
   headScriptsName,
@@ -13,13 +14,16 @@ const Root = ({
   return (
     <Html locale={locale}>
       <Head stylesName={stylesName} headScriptsName={headScriptsName} />
-      <Body bodyScriptsName={bodyScriptsName}>{page.default({ locale })}</Body>
+      <Body bodyScriptsName={bodyScriptsName}>
+        {page.default({ locale, id })}
+      </Body>
     </Html>
   );
 };
 
 type RootProps = {
   locale: string;
+  id: string;
   page: any;
   stylesName: string;
   headScriptsName: string;

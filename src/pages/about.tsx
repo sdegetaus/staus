@@ -9,6 +9,7 @@ const About = (props: PageProps) => {
       <h1>
         <IntlMessage id="about.title" />
       </h1>
+      <pre>{JSON.stringify(props, null, 4)}</pre>
     </Layout>
   );
 };
