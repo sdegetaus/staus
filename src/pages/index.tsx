@@ -1,9 +1,10 @@
-import { IntlMessage, intlMessage, SEO } from "library";
-import { PageProps } from "library/types";
+import { IntlMessage, translate } from "library";
+import { PageProps, SEO } from "library/types";
 import React from "react";
 import Layout from "../layout";
+import { DefaultSEO } from "../test";
 
-const Index = (props: PageProps): JSX.Element => {
+export default (props: PageProps) => {
   return (
     <Layout {...props}>
       <h1>
@@ -13,8 +14,10 @@ const Index = (props: PageProps): JSX.Element => {
   );
 };
 
-export default (props: PageProps) =>
-  SEO.connect(<Index {...props} />, {
-    title: intlMessage("home.title"),
-    description: "Description!",
-  });
+export const LoadSEO = (): SEO => {
+  return {
+    ...DefaultSEO,
+    title: translate("home.title"),
+    description: "This is the index page!",
+  };
+};

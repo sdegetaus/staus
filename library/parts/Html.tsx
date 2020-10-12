@@ -1,10 +1,12 @@
+import Intl from "../intl";
 import React from "react";
 
-export default (props: Props) => {
-  return <html lang={props.locale && props.locale}>{props.children}</html>;
+export default (props: HtmlProps) => {
+  const { locale, children } = props;
+  return <html lang={locale ? locale : Intl.defaultLocale}>{children}</html>;
 };
 
-type Props = {
+type HtmlProps = {
   locale?: string;
   children: JSX.Element[];
 };

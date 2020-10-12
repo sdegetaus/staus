@@ -1,10 +1,8 @@
 import React from "react";
-import SEO from "../seo";
+import { SEO } from "../types";
 
-export default ({ stylesName = null, headScriptsName = null }: HeadProps) => {
-  const title = SEO.title;
-  const description = SEO.description;
-  const meta = SEO.meta;
+export default (props: HeadProps) => {
+  const { title, description, meta, stylesName, headScriptsName } = props;
   return (
     <head>
       <meta charSet="utf-8" />
@@ -19,9 +17,15 @@ export default ({ stylesName = null, headScriptsName = null }: HeadProps) => {
         meta.map((o) => (
           <meta key={o.name} name={o.name} content={o.content} />
         ))}
+      {/* todo: make conditional */}
       <link rel="icon" href="/favicon.png" type="image/png" />
       {stylesName !== null && (
-        <link rel="stylesheet" type="text/css" href={`/${stylesName}.css`} />
+        <link
+          id={stylesName}
+          rel="stylesheet"
+          type="text/css"
+          href={`/${stylesName}.css`}
+        />
       )}
       {headScriptsName !== null && (
         <script type="text/javascript" src={`/${headScriptsName}.js`}></script>
@@ -30,7 +34,7 @@ export default ({ stylesName = null, headScriptsName = null }: HeadProps) => {
   );
 };
 
-type HeadProps = {
+interface HeadProps extends SEO {
   stylesName?: string;
   headScriptsName?: string;
-};
+}

@@ -1,20 +1,26 @@
 import React from "react";
-import { PageProps } from "../types";
+import { SEO } from "types";
 import Body from "./Body";
 import Head from "./Head";
 import Html from "./Html";
 
-export default ({
-  locale,
-  pageId,
-  page,
-  stylesName,
-  headScriptsName,
-  bodyScriptsName,
-}: RootProps) => {
+export default (props: RootProps) => {
+  const {
+    locale,
+    pageId,
+    page,
+    stylesName,
+    headScriptsName,
+    bodyScriptsName,
+    ...seo
+  } = props;
   return (
     <Html locale={locale}>
-      <Head stylesName={stylesName} headScriptsName={headScriptsName} />
+      <Head
+        headScriptsName={headScriptsName}
+        stylesName={stylesName}
+        {...seo}
+      />
       <Body bodyScriptsName={bodyScriptsName}>
         {page.default({ locale, pageId })}
       </Body>
@@ -22,8 +28,10 @@ export default ({
   );
 };
 
-interface RootProps extends PageProps {
-  page: any; // get type?
+interface RootProps extends SEO {
+  locale: string;
+  pageId: string;
+  page: any;
   stylesName: string;
   headScriptsName: string;
   bodyScriptsName: string;

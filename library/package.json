@@ -8,7 +8,6 @@
   },
   "scripts": {
     "build": "ts-node ./cli-scripts/build.ts",
-    "watch": "ts-node ./cli-scripts/watch.ts",
     "test": "jest"
   },
   "devDependencies": {
