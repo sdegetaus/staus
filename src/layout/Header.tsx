@@ -1,7 +1,7 @@
 import React from "react";
 import Menu from "./Menu";
 
-export default () => {
+export default (props: HeaderProps) => {
   return (
     <header>
       <div className="inner">
@@ -10,8 +10,13 @@ export default () => {
             Taus<span>MX</span>
           </a>
         </div>
-        <Menu />
+        <Menu {...props} />
       </div>
     </header>
   );
 };
+
+interface HeaderProps {
+  pageId: string;
+  locale: string;
+}

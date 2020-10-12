@@ -1,26 +1,22 @@
+import { IntlMessage, Link } from "library";
 import React from "react";
-import { Link } from "library";
-
-const items = [
-  {
-    href: "/",
-    title: "Home",
-  },
-  {
-    href: "/about",
-    title: "About",
-  },
-];
+import { routes } from "../routes";
 
 const lang = ["en", "es"];
 
-export default () => {
+const activeStyle = {
+  backgroundColor: "red",
+};
+
+export default (props: MenuProps) => {
   return (
     <nav className="menu">
       <ul>
-        {items.map((o) => (
-          <li key={o.title}>
-            <Link to={o.href}>{o.title}</Link>
+        {Object.keys(routes).map((o) => (
+          <li key={o} style={o === props.pageId ? activeStyle : {}}>
+            <Link to={routes[o].slug[props.locale]}>
+              <IntlMessage id={routes[o].title} />
+            </Link>
           </li>
         ))}
       </ul>
@@ -34,3 +30,8 @@ export default () => {
     </nav>
   );
 };
+
+interface MenuProps {
+  pageId: string;
+  locale: string;
+}

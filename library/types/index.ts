@@ -1,6 +1,6 @@
 export interface PageProps {
   locale: string;
-  id: string;
+  pageId: string;
 }
 
 export type LocaleData = {

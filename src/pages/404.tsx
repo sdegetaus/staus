@@ -4,9 +4,8 @@ import Layout from "../layout";
 
 export default (props: PageProps) => {
   return (
-    <Layout>
+    <Layout {...props}>
       <h1>404</h1>
-      <pre>{JSON.stringify(props, null, 4)}</pre>
     </Layout>
   );
 };

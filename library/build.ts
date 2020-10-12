@@ -132,11 +132,11 @@ export default async function build(config: BuildConfig) {
           const bodyScriptsName = FLAGS.enqueueBodyScripts
             ? config.bodyScripts.name
             : null;
-          const id = filename.toLowerCase(); // page id
+          const pageId = filename.toLowerCase();
           const html = ReactDOMServer.renderToStaticMarkup(
             Root({
               locale,
-              id,
+              pageId,
               page,
               stylesName,
               headScriptsName,
@@ -146,7 +146,7 @@ export default async function build(config: BuildConfig) {
           const processedHtml = config.minify
             ? htmlMinifier(html)
             : html_beautify(html);
-          const translatedSlug = SEO.slug == null ? id : SEO.slug;
+          const translatedSlug = SEO.slug == null ? pageId : SEO.slug;
           fs.writeFileSync(
             path.join(languageDir, `/${translatedSlug}.html`),
             processedHtml

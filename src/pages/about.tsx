@@ -1,15 +1,14 @@
-import { IntlMessage, SEO, intlMessage } from "library";
+import { IntlMessage, intlMessage, SEO } from "library";
 import { PageProps } from "library/types";
 import React from "react";
 import Layout from "../layout";
 
 const About = (props: PageProps) => {
   return (
-    <Layout>
+    <Layout {...props}>
       <h1>
         <IntlMessage id="about.title" />
       </h1>
-      <pre>{JSON.stringify(props, null, 4)}</pre>
     </Layout>
   );
 };

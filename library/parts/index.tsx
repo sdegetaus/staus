@@ -1,11 +1,12 @@
 import React from "react";
+import { PageProps } from "../types";
 import Body from "./Body";
 import Head from "./Head";
 import Html from "./Html";
 
-const Root = ({
+export default ({
   locale,
-  id,
+  pageId,
   page,
   stylesName,
   headScriptsName,
@@ -15,19 +16,15 @@ const Root = ({
     <Html locale={locale}>
       <Head stylesName={stylesName} headScriptsName={headScriptsName} />
       <Body bodyScriptsName={bodyScriptsName}>
-        {page.default({ locale, id })}
+        {page.default({ locale, pageId })}
       </Body>
     </Html>
   );
 };
 
-type RootProps = {
-  locale: string;
-  id: string;
-  page: any;
+interface RootProps extends PageProps {
+  page: any; // get type?
   stylesName: string;
   headScriptsName: string;
   bodyScriptsName: string;
-};
-
-export default Root;
+}

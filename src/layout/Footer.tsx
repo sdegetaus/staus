@@ -5,11 +5,15 @@ export default () => {
   return (
     <footer>
       <div className="inner">
-        &copy; 2020{" "}
-        <Link to="/" data="asd">
-          Santiago Degetau
-        </Link>{" "}
-        &ndash; All rights reserved
+        <div className="meta">
+          <span className="copy">
+            &copy; {new Date().getFullYear()}{" "}
+            <Link to="/" data="asd">
+              Santiago Degetau
+            </Link>{" "}
+            &ndash; All rights reserved
+          </span>
+        </div>
       </div>
     </footer>
   );
